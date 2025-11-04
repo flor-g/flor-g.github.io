@@ -39,7 +39,7 @@
       padding: 3rem 1.5rem 4rem;
     }
 
-    header {
+    .page-header {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
@@ -48,43 +48,16 @@
       align-items: flex-start;
     }
 
-    header h1 {
+    .page-header h1 {
       font-size: clamp(2rem, 4vw, 3rem);
       letter-spacing: -0.04em;
       font-weight: 600;
     }
 
-    nav {
-      max-width: 680px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 0.75rem;
-    }
-
-    nav a {
-      display: block;
-      text-decoration: none;
-      border: 1px solid var(--muted);
-      border-radius: 9px;
-      padding: 0.75rem 1.25rem;
-      text-align: center;
-      color: var(--foreground);
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      transition: border-color 0.2s ease, background 0.2s ease;
-    }
-
-    nav a:focus,
-    nav a:hover {
-      border-color: var(--accent);
-      background: var(--accent);
-      color: var(--background);
-    }
-
     main {
       flex: 1;
-      max-width: 680px;
+      max-width: 960px;
+      width: 100%;
       margin: 0 auto;
       display: grid;
       gap: 2.5rem;
@@ -99,26 +72,54 @@
       min-height: 180px;
     }
 
-    section header {
-      margin: 0;
-      align-items: flex-start;
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
     }
 
-    section h2 {
+    .section-header h2 {
       font-size: 1.5rem;
       font-weight: 600;
       letter-spacing: 0.04em;
     }
 
+    .toggle-slots {
+      border: 1px solid var(--muted);
+      border-radius: 999px;
+      padding: 0.4rem 0.9rem;
+      background: transparent;
+      color: var(--foreground);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .toggle-slots:hover,
+    .toggle-slots:focus-visible {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--background);
+      outline: none;
+    }
+
     .slots {
       display: grid;
       gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(clamp(160px, 50vw, 280px), 1fr));
     }
 
     .slot {
       border: 1px dashed var(--muted);
       border-radius: 10px;
       min-height: 48px;
+    }
+
+    iframe {
+      border-radius: 10px;
     }
 
     footer {
@@ -130,18 +131,27 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 2.5rem 1rem 3rem;
+      }
+
+      section {
+        padding: 1.5rem;
+      }
+
+      .toggle-slots {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.8rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
+  <header class="page-header">
     <h1>Flora Gu | 顧 思悤</h1>
   </header>
-
-  <nav>
-    <a href="#cv">CV</a>
-    <a href="#writings">Casual Writings</a>
-    <a href="#papers">Papers</a>
-  </nav>
 
   <main>
     <section id="intro">
@@ -149,10 +159,11 @@
     </section>
 
     <section id="papers">
-      <header>
-        <h2>Papers & Essays</h2>
+      <header class="section-header">
+        <h2>Papers &amp; Essays</h2>
+        <button class="toggle-slots" type="button" aria-expanded="true" aria-controls="papers-slots" data-show-text="Show slots" data-hide-text="Hide slots">Hide slots</button>
       </header>
-      <div class="slots">
+      <div class="slots" id="papers-slots">
         <div class="slot" aria-label="Add paper link"></div>
         <div class="slot" aria-label="Add paper link"></div>
         <div class="slot" aria-label="Add paper link"></div>
@@ -160,10 +171,11 @@
     </section>
 
     <section id="writings">
-      <header>
+      <header class="section-header">
         <h2>Casual Writings</h2>
+        <button class="toggle-slots" type="button" aria-expanded="true" aria-controls="writings-slots" data-show-text="Show slots" data-hide-text="Hide slots">Hide slots</button>
       </header>
-      <div class="slots">
+      <div class="slots" id="writings-slots">
         <div class="slot" aria-label="Add writing link"></div>
         <div class="slot" aria-label="Add writing link"></div>
         <div class="slot" aria-label="Add writing link"></div>
@@ -171,24 +183,52 @@
     </section>
 
     <section id="cv">
-      <header>
+      <header class="section-header">
         <h2>CV</h2>
+        <button class="toggle-slots" type="button" aria-expanded="true" aria-controls="cv-slots" data-show-text="Show slots" data-hide-text="Hide slots">Hide slots</button>
       </header>
-      <div class="slots">
+      <div class="slots" id="cv-slots">
         <iframe
-        src="https://docs.google.com/gview?embedded=true&url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Ddownload%26id%3D1kWJDU0prcTPiqW-G9fVHpHVG9HC_RVza"
-        width="100%"
-        height="450"
-        style="border:0;"
-        allow="fullscreen"
-      ></iframe>
-      
+          src="https://docs.google.com/gview?embedded=true&url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Ddownload%26id%3D1kWJDU0prcTPiqW-G9fVHpHVG9HC_RVza"
+          width="100%"
+          height="450"
+          style="border:0;"
+          allow="fullscreen"
+        ></iframe>
       </div>
     </section>
-    
   </main>
 
   <footer></footer>
+
+  <script>
+    document.querySelectorAll('.toggle-slots').forEach((button) => {
+      const controlsId = button.getAttribute('aria-controls');
+      const slots = controlsId
+        ? document.getElementById(controlsId)
+        : button.closest('section')?.querySelector('.slots');
+
+      if (!slots) {
+        return;
+      }
+
+      const showLabel = button.dataset.showText || 'Show slots';
+      const hideLabel = button.dataset.hideText || 'Hide slots';
+
+      const syncButtonState = (expanded) => {
+        button.setAttribute('aria-expanded', String(expanded));
+        slots.hidden = !expanded;
+        button.textContent = expanded ? hideLabel : showLabel;
+      };
+
+      const initialExpanded = button.getAttribute('aria-expanded');
+      syncButtonState(initialExpanded === 'false' ? false : true);
+
+      button.addEventListener('click', () => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        syncButtonState(!expanded);
+      });
+    });
+  </script>
 </body>
 </html>
-
