@@ -67,7 +67,8 @@
       border: 1px solid var(--muted);
       border-radius: 20px;
       padding: 1.75rem;
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 1.5rem;
     }
 
@@ -109,6 +110,10 @@
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+    }
+
+    .slots[hidden] {
+      display: none !important;
     }
 
     .slot {
@@ -217,7 +222,6 @@
       const syncButtonState = (expanded) => {
         button.setAttribute('aria-expanded', String(expanded));
         slots.hidden = !expanded;
-        slots.style.display = expanded ? '' : 'none';
         button.textContent = expanded ? hideLabel : showLabel;
       };
 
