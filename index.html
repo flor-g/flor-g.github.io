@@ -161,9 +161,9 @@
     <section id="papers">
       <header class="section-header">
         <h2>Papers &amp; Essays</h2>
-        <button class="toggle-slots" type="button" aria-expanded="true" aria-controls="papers-slots" data-show-text="Show slots" data-hide-text="Hide slots">Hide slots</button>
+        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="papers-slots" data-show-text="Show slots" data-hide-text="Hide slots">Show slots</button>
       </header>
-      <div class="slots" id="papers-slots">
+      <div class="slots" id="papers-slots" hidden>
         <div class="slot" aria-label="Add paper link"></div>
         <div class="slot" aria-label="Add paper link"></div>
         <div class="slot" aria-label="Add paper link"></div>
@@ -173,9 +173,9 @@
     <section id="writings">
       <header class="section-header">
         <h2>Casual Writings</h2>
-        <button class="toggle-slots" type="button" aria-expanded="true" aria-controls="writings-slots" data-show-text="Show slots" data-hide-text="Hide slots">Hide slots</button>
+        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="writings-slots" data-show-text="Show slots" data-hide-text="Hide slots">Show slots</button>
       </header>
-      <div class="slots" id="writings-slots">
+      <div class="slots" id="writings-slots" hidden>
         <div class="slot" aria-label="Add writing link"></div>
         <div class="slot" aria-label="Add writing link"></div>
         <div class="slot" aria-label="Add writing link"></div>
@@ -185,9 +185,9 @@
     <section id="cv">
       <header class="section-header">
         <h2>CV</h2>
-        <button class="toggle-slots" type="button" aria-expanded="true" aria-controls="cv-slots" data-show-text="Show slots" data-hide-text="Hide slots">Hide slots</button>
+        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="cv-slots" data-show-text="Show slots" data-hide-text="Hide slots">Show slots</button>
       </header>
-      <div class="slots" id="cv-slots">
+      <div class="slots" id="cv-slots" hidden>
         <iframe
           src="https://docs.google.com/gview?embedded=true&url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Ddownload%26id%3D1kWJDU0prcTPiqW-G9fVHpHVG9HC_RVza"
           width="100%"
@@ -218,6 +218,7 @@
       const syncButtonState = (expanded) => {
         button.setAttribute('aria-expanded', String(expanded));
         slots.hidden = !expanded;
+        slots.style.display = expanded ? '' : 'none';
         button.textContent = expanded ? hideLabel : showLabel;
       };
 
