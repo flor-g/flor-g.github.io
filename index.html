@@ -39,7 +39,7 @@
       padding: 3rem 1.5rem 4rem;
     }
 
-    header {
+    .page-header {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
@@ -48,43 +48,16 @@
       align-items: flex-start;
     }
 
-    header h1 {
+    .page-header h1 {
       font-size: clamp(2rem, 4vw, 3rem);
       letter-spacing: -0.04em;
       font-weight: 600;
     }
 
-    nav {
-      max-width: 680px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 0.75rem;
-    }
-
-    nav a {
-      display: block;
-      text-decoration: none;
-      border: 1px solid var(--muted);
-      border-radius: 9px;
-      padding: 0.75rem 1.25rem;
-      text-align: center;
-      color: var(--foreground);
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      transition: border-color 0.2s ease, background 0.2s ease;
-    }
-
-    nav a:focus,
-    nav a:hover {
-      border-color: var(--accent);
-      background: var(--accent);
-      color: var(--background);
-    }
-
     main {
       flex: 1;
-      max-width: 680px;
+      max-width: 960px;
+      width: 100%;
       margin: 0 auto;
       display: grid;
       gap: 2.5rem;
@@ -93,32 +66,72 @@
     section {
       border: 1px solid var(--muted);
       border-radius: 20px;
-      padding: 1.75rem;
-      display: grid;
-      gap: 1.5rem;
-      min-height: 180px;
+      padding: 1.1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
     }
 
-    section header {
-      margin: 0;
-      align-items: flex-start;
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
     }
 
-    section h2 {
+    .section-header h2 {
       font-size: 1.5rem;
       font-weight: 600;
       letter-spacing: 0.04em;
     }
 
+    .toggle-slots {
+      border: 1px solid var(--muted);
+      border-radius: 999px;
+      padding: 0.4rem 0.9rem;
+      background: transparent;
+      color: var(--foreground);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: border-color 0.7s ease, background 0.7s ease, color 0.7s ease;
+    }
+
+    .toggle-slots:hover,
+    .toggle-slots:focus-visible {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--background);
+      outline: none;
+    }
+
     .slots {
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    .slots[hidden] {
+      display: none !important;
+    }
+
+    section .slots[hidden] {
+      margin-top: 0;
     }
 
     .slot {
       border: 1px dashed var(--muted);
       border-radius: 10px;
       min-height: 48px;
+    }
+
+    iframe {
+      border-radius: 10px;
+    }
+
+    p {
+      line-height: 1.5;
     }
 
     footer {
@@ -130,29 +143,41 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 2.5rem 1rem 3rem;
+      }
+
+      section {
+        padding: 1.5rem;
+      }
+
+      .toggle-sections {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.8rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
+  <header class="page-header">
     <h1>Flora Gu | 顧 思悤</h1>
   </header>
 
-  <nav>
-    <a href="#cv">CV</a>
-    <a href="#writings">Casual Writings</a>
-    <a href="#papers">Papers</a>
-  </nav>
-
   <main>
     <section id="intro">
-      <p>...</p>
+      <p>
+        Quae res in civitate duae plurimum possunt, eae contra nos ambae faciunt in hoc tempore, summa gratia et eloquentia; quarum alterum, C. Aquili, vereor, alteram metuo. Eloquentia Q. Hortensi ne me in dicendo impediat, non nihil commoveor, gratia Sex. Naevi ne P. Quinctio noceat, id vero non mediocriter pertimesco. Neque hoc tanto opere querendum videretur, haec summa in illis esse, si in nobis essent saltem mediocria; verum ita se res habet, ut ego, qui neque usu satis et ingenio parum possum, cum patrono disertissimo comparer, P. Quinctius, cui tenues opes, nullae facultates, exiguae amicorum copiae sunt, cum adversario gratiosissimo contendat. Illud quoque nobis accedit incommodum, quod M. Iunius, qui hanc causam aliquotiens apud te egit, homo et in aliis causis exercitatus et in hac multum ac saepe versatus, hoc tempore abest nova legatione impeditus, et ad me ventum est qui, ut summa haberem cetera, temporis quidem certe vix satis habui ut rem tantam, tot controversiis implicatam, possem cognoscere. Ita quod mihi consuevit in ceteris causis esse adiumento, id quoque in hac causa deficit. Nam, quod ingenio minus possum, subsidium mihi diligentia comparavi; quae quanta sit, nisi tempus et spatium datum sit, intellegi non potest. Quae quo plura sunt, C. Aquili, eo te et hos qui tibi in consilio sunt meliore mente nostra verba audire oportebit, ut multis incommodis veritas debilitata tandem aequitate talium virorum recreetur. Quod si tu iudex nullo praesidio fuisse videbere contra vim et gratiam solitudini atque inopiae, si apud hoc consilium ex opibus, non ex veritate causa pendetur, profecto nihil est iam sanctum atque sincerum in civitate, nihil est quod humilitatem cuiusquam gravitas et virtus iudicis consoletur. Certe aut apud te et hos qui tibi adsunt veritas valebit, aut ex hoc loco repulsa vi et gratia locum ubi consistat reperire non poterit.
+      </p>
     </section>
 
     <section id="papers">
-      <header>
-        <h2>Papers & Essays</h2>
+      <header class="section-header">
+        <h2>Papers &amp; Essays</h2>
+        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="papers-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
       </header>
-      <div class="slots">
+      <div class="slots" id="papers-slots" hidden>
         <div class="slot" aria-label="Add paper link"></div>
         <div class="slot" aria-label="Add paper link"></div>
         <div class="slot" aria-label="Add paper link"></div>
@@ -160,10 +185,11 @@
     </section>
 
     <section id="writings">
-      <header>
+      <header class="section-header">
         <h2>Casual Writings</h2>
+        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="writings-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
       </header>
-      <div class="slots">
+      <div class="slots" id="writings-slots" hidden>
         <div class="slot" aria-label="Add writing link"></div>
         <div class="slot" aria-label="Add writing link"></div>
         <div class="slot" aria-label="Add writing link"></div>
@@ -171,24 +197,52 @@
     </section>
 
     <section id="cv">
-      <header>
+      <header class="section-header">
         <h2>CV</h2>
+        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="cv-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
       </header>
-      <div class="slots">
+      <div class="slots" id="cv-slots" hidden>
         <iframe
-        src="https://docs.google.com/gview?embedded=true&url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Ddownload%26id%3D1kWJDU0prcTPiqW-G9fVHpHVG9HC_RVza"
-        width="100%"
-        height="450"
-        style="border:0;"
-        allow="fullscreen"
-      ></iframe>
-      
+          src="https://docs.google.com/gview?embedded=true&url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Ddownload%26id%3D1kWJDU0prcTPiqW-G9fVHpHVG9HC_RVza"
+          width="100%"
+          height="450"
+          style="border:0;"
+          allow="fullscreen"
+        ></iframe>
       </div>
     </section>
-    
   </main>
 
   <footer></footer>
+
+  <script>
+    document.querySelectorAll('.toggle-slots').forEach((button) => {
+      const controlsId = button.getAttribute('aria-controls');
+      const slots = controlsId
+        ? document.getElementById(controlsId)
+        : button.closest('section')?.querySelector('.slots');
+
+      if (!slots) {
+        return;
+      }
+
+      const showLabel = button.dataset.showText || 'Show';
+      const hideLabel = button.dataset.hideText || 'Hide';
+
+      const syncButtonState = (expanded) => {
+        button.setAttribute('aria-expanded', String(expanded));
+        slots.hidden = !expanded;
+        button.textContent = expanded ? hideLabel : showLabel;
+      };
+
+      const initialExpanded = button.getAttribute('aria-expanded');
+      syncButtonState(initialExpanded === 'false' ? false : true);
+
+      button.addEventListener('click', () => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        syncButtonState(!expanded);
+      });
+    });
+  </script>
 </body>
 </html>
-
