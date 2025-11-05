@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Papers &amp; Essays</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --background: #f6f6f6;
+        --foreground: #111;
+        --accent: #222;
+        --muted: #d0d0d0;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background: #111;
+          --foreground: #f6f6f6;
+          --accent: #f6f6f6;
+          --muted: #333;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--background);
+        color: var(--foreground);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-bar {
+        display: none;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--muted);
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .top-bar h1 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--accent);
+      }
+
+      main {
+        flex: 1;
+        width: min(1200px, 100%);
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 3rem;
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: minmax(0, 1fr) 320px;
+      }
+
+      .viewer {
+        position: relative;
+        border: 1px solid var(--muted);
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .viewer iframe {
+        flex: 1;
+        width: 100%;
+        border: 0;
+      }
+
+      .viewer-placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        text-align: center;
+        background: color-mix(in srgb, var(--background) 80%, transparent);
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .viewer-placeholder[hidden] {
+        display: none;
+      }
+
+      .sidebar {
+        border: 1px solid var(--muted);
+        border-radius: 20px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        position: sticky;
+        top: 2rem;
+        align-self: start;
+        height: fit-content;
+      }
+
+      .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .sidebar h1 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .document-list,
+      .mobile-document-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .document-button {
+        width: 100%;
+        text-align: left;
+        background: transparent;
+        border: 1px solid var(--muted);
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        font: inherit;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        color: inherit;
+        cursor: pointer;
+        transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+      }
+
+      .document-button:hover,
+      .document-button:focus-visible {
+        outline: none;
+        border-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 10%, transparent);
+      }
+
+      .document-button[aria-current="true"] {
+        border-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 15%, transparent);
+      }
+
+      .mobile-section {
+        display: none;
+        padding: 0 1.5rem 2.5rem;
+      }
+
+      .mobile-section h2 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 900px) {
+        main {
+          grid-template-columns: minmax(0, 1fr);
+          padding: 2rem 1.25rem 2.5rem;
+        }
+
+        .sidebar {
+          display: none;
+        }
+
+        .top-bar {
+          display: flex;
+        }
+
+        .mobile-section {
+          display: block;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .top-bar {
+          padding: 0.85rem 1rem;
+        }
+
+        main {
+          padding: 1.5rem 1rem 2rem;
+        }
+
+        .mobile-section {
+          padding: 0 1rem 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="top-bar">
+        <a class="back-link" href="index.html">&#8592; Back</a>
+        <h1>Papers &amp; Essays</h1>
+      </header>
+
+      <main>
+        <section class="viewer" aria-live="polite">
+          <iframe
+            id="paper-viewer"
+            title="Paper viewer"
+            src="about:blank"
+            allow="fullscreen"
+          ></iframe>
+          <div class="viewer-placeholder" id="viewer-placeholder">
+            Select a paper or essay to load it here. Update the document list in the
+            script with your Google Drive file IDs. Use the <code>type</code> or
+            <code>embedUrl</code> fields in the script when linking Google Docs or
+            other Drive-native formats so they render correctly.
+          </div>
+        </section>
+
+        <aside class="sidebar" aria-label="Papers and essays">
+          <div class="sidebar-header">
+            <a class="back-link" href="index.html">&#8592; Back</a>
+            <h1>Papers &amp; Essays</h1>
+          </div>
+          <ul class="document-list" id="sidebar-document-list"></ul>
+        </aside>
+      </main>
+
+      <section class="mobile-section" aria-label="Papers and essays">
+        <h2>Browse papers</h2>
+        <ul class="mobile-document-list" id="mobile-document-list"></ul>
+      </section>
+    </div>
+
+    <script src="papers-data.js"></script>
+    <script>
+      (function () {
+        const documents = Array.isArray(window.papersDocuments)
+          ? window.papersDocuments.filter((doc) => doc && doc.title && doc.id)
+          : [];
+
+        const googleWorkspacePreviewPaths = {
+          gdoc: "document",
+          gsheet: "spreadsheets",
+          gslide: "presentation",
+        };
+
+        const googleWorkspaceMimePreviewPaths = {
+          "application/vnd.google-apps.document": "document",
+          "application/vnd.google-apps.spreadsheet": "spreadsheets",
+          "application/vnd.google-apps.presentation": "presentation",
+        };
+
+        const documentLookup = new Map(documents.map((doc) => [doc.id, doc]));
+
+        const getDocumentEmbedSrc = (doc) => {
+          if (!doc || !doc.id) {
+            return null;
+          }
+
+          if (doc.embedUrl) {
+            return doc.embedUrl;
+          }
+
+          const typeKey = typeof doc.type === "string" ? doc.type.toLowerCase() : "";
+          const workspacePath = googleWorkspacePreviewPaths[typeKey];
+
+          if (workspacePath) {
+            return `https://docs.google.com/${workspacePath}/d/${encodeURIComponent(doc.id)}/preview`;
+          }
+
+          const mimePath = googleWorkspaceMimePreviewPaths[doc.mimeType];
+          if (mimePath) {
+            return `https://docs.google.com/${mimePath}/d/${encodeURIComponent(doc.id)}/preview`;
+          }
+
+          const documentUrl = `https://drive.google.com/uc?export=download&id=${encodeURIComponent(doc.id)}`;
+          return (
+            "https://docs.google.com/gview?embedded=true&url=" +
+            encodeURIComponent(documentUrl)
+          );
+        };
+
+        const buildDocumentButton = (doc) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "document-button";
+          button.textContent = doc.title;
+          button.dataset.docId = doc.id;
+          button.setAttribute("aria-current", "false");
+          return button;
+        };
+
+        const sidebarList = document.getElementById("sidebar-document-list");
+        const mobileList = document.getElementById("mobile-document-list");
+        const viewer = document.getElementById("paper-viewer");
+        const placeholder = document.getElementById("viewer-placeholder");
+
+        const syncPlaceholderVisibility = (isHidden) => {
+          placeholder.hidden = isHidden;
+          placeholder.setAttribute("aria-hidden", isHidden ? "true" : "false");
+        };
+
+        const updateUrl = (docId, hasEmbed) => {
+          if (!window.history || typeof window.history.replaceState !== "function") {
+            return;
+          }
+
+          const url = new URL(window.location.href);
+          if (hasEmbed && docId) {
+            url.searchParams.set("doc", docId);
+          } else {
+            url.searchParams.delete("doc");
+          }
+
+          window.history.replaceState(null, "", url);
+        };
+
+        let buttons = [];
+
+        const setActiveDocument = (docId, { allowUrlUpdate = true } = {}) => {
+          if (!buttons.length) {
+            viewer.src = "about:blank";
+            syncPlaceholderVisibility(false);
+            if (allowUrlUpdate) {
+              updateUrl(null, false);
+            }
+            return false;
+          }
+
+          const doc = documentLookup.get(docId);
+          const embedSrc = doc && !String(doc.id).startsWith("REPLACE_WITH")
+            ? getDocumentEmbedSrc(doc)
+            : null;
+
+          buttons.forEach((btn) => {
+            const isMatch = btn.dataset.docId === docId && !!embedSrc;
+            btn.setAttribute("aria-current", isMatch ? "true" : "false");
+          });
+
+          if (embedSrc) {
+            viewer.src = embedSrc;
+            syncPlaceholderVisibility(true);
+            if (allowUrlUpdate) {
+              updateUrl(docId, true);
+            }
+            return true;
+          }
+
+          viewer.src = "about:blank";
+          syncPlaceholderVisibility(false);
+          if (allowUrlUpdate) {
+            updateUrl(null, false);
+          }
+          return false;
+        };
+
+        const renderLists = () => {
+          if (!documents.length) {
+            sidebarList.replaceChildren();
+            mobileList.replaceChildren();
+            buttons = [];
+            viewer.src = "about:blank";
+            syncPlaceholderVisibility(false);
+            updateUrl(null, false);
+            return;
+          }
+
+          const createListItem = (doc) => {
+            const li = document.createElement("li");
+            const button = buildDocumentButton(doc);
+            li.appendChild(button);
+            return { li, button };
+          };
+
+          const sidebarItems = documents.map(createListItem);
+          const mobileItems = documents.map(createListItem);
+
+          sidebarList.replaceChildren(...sidebarItems.map((item) => item.li));
+          mobileList.replaceChildren(...mobileItems.map((item) => item.li));
+
+          buttons = [
+            ...sidebarItems.map((item) => item.button),
+            ...mobileItems.map((item) => item.button),
+          ];
+
+          buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+              setActiveDocument(button.dataset.docId);
+            });
+          });
+        };
+
+        const getRequestedDocId = () => {
+          const params = new URLSearchParams(window.location.search);
+          const requestedId = params.get("doc");
+          return requestedId && documentLookup.has(requestedId) ? requestedId : null;
+        };
+
+        renderLists();
+
+        if (!buttons.length) {
+          return;
+        }
+
+        let hasActiveDocument = false;
+        const requestedId = getRequestedDocId();
+
+        if (requestedId) {
+          hasActiveDocument = setActiveDocument(requestedId, { allowUrlUpdate: false });
+        }
+
+        if (!hasActiveDocument) {
+          for (const button of buttons) {
+            if (setActiveDocument(button.dataset.docId, { allowUrlUpdate: false })) {
+              hasActiveDocument = true;
+              break;
+            }
+          }
+        }
+
+        if (!hasActiveDocument) {
+          updateUrl(null, false);
+        }
+      })();
+    </script>
+  </body>
+</html>
