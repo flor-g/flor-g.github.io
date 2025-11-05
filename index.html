@@ -121,9 +121,42 @@
     }
 
     .slot {
-      border: 1px dashed var(--muted);
       border-radius: 10px;
       min-height: 48px;
+    }
+
+    .slot-placeholder {
+      border: 1px dashed var(--muted);
+    }
+
+    .slot-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      border: 1px solid var(--muted);
+      padding: 0.85rem 1rem;
+      text-decoration: none;
+      color: inherit;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+    }
+
+    .slot-link:hover,
+    .slot-link:focus-visible {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      outline: none;
+    }
+
+    .slot-link-label {
+      flex: 1;
+    }
+
+    .slot-link-icon {
+      font-size: 1rem;
+      opacity: 0.65;
     }
 
     iframe {
@@ -178,9 +211,9 @@
         <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="papers-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
       </header>
       <div class="slots" id="papers-slots" hidden>
-        <div class="slot" aria-label="Add paper link"></div>
-        <div class="slot" aria-label="Add paper link"></div>
-        <div class="slot" aria-label="Add paper link"></div>
+        <div class="slot slot-placeholder" aria-label="Add paper link"></div>
+        <div class="slot slot-placeholder" aria-label="Add paper link"></div>
+        <div class="slot slot-placeholder" aria-label="Add paper link"></div>
       </div>
     </section>
 
@@ -190,9 +223,9 @@
         <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="writings-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
       </header>
       <div class="slots" id="writings-slots" hidden>
-        <div class="slot" aria-label="Add writing link"></div>
-        <div class="slot" aria-label="Add writing link"></div>
-        <div class="slot" aria-label="Add writing link"></div>
+        <div class="slot slot-placeholder" aria-label="Add writing link"></div>
+        <div class="slot slot-placeholder" aria-label="Add writing link"></div>
+        <div class="slot slot-placeholder" aria-label="Add writing link"></div>
       </div>
     </section>
 
@@ -215,34 +248,72 @@
 
   <footer></footer>
 
+  <script src="papers-data.js"></script>
   <script>
-    document.querySelectorAll('.toggle-slots').forEach((button) => {
-      const controlsId = button.getAttribute('aria-controls');
-      const slots = controlsId
-        ? document.getElementById(controlsId)
-        : button.closest('section')?.querySelector('.slots');
+    (function () {
+      const papersSlots = document.getElementById('papers-slots');
+      const documents = Array.isArray(window.papersDocuments)
+        ? window.papersDocuments.filter((doc) => doc && doc.title)
+        : [];
 
-      if (!slots) {
-        return;
+      if (papersSlots && documents.length > 0) {
+        const fragment = document.createDocumentFragment();
+
+        documents.forEach((doc) => {
+          const link = document.createElement('a');
+          link.className = 'slot slot-link';
+
+          const label = document.createElement('span');
+          label.className = 'slot-link-label';
+          label.textContent = doc.title;
+
+          if (doc.id && !String(doc.id).startsWith('REPLACE_WITH')) {
+            link.href = `papers.html?doc=${encodeURIComponent(doc.id)}`;
+            link.setAttribute('data-doc-id', doc.id);
+          } else {
+            link.href = 'papers.html';
+          }
+
+          const icon = document.createElement('span');
+          icon.className = 'slot-link-icon';
+          icon.setAttribute('aria-hidden', 'true');
+          icon.textContent = '↗';
+
+          link.append(label, icon);
+          fragment.appendChild(link);
+        });
+
+        papersSlots.replaceChildren(fragment);
       }
 
-      const showLabel = button.dataset.showText || 'Show';
-      const hideLabel = button.dataset.hideText || 'Hide';
+      document.querySelectorAll('.toggle-slots').forEach((button) => {
+        const controlsId = button.getAttribute('aria-controls');
+        const slots = controlsId
+          ? document.getElementById(controlsId)
+          : button.closest('section')?.querySelector('.slots');
 
-      const syncButtonState = (expanded) => {
-        button.setAttribute('aria-expanded', String(expanded));
-        slots.hidden = !expanded;
-        button.textContent = expanded ? hideLabel : showLabel;
-      };
+        if (!slots) {
+          return;
+        }
 
-      const initialExpanded = button.getAttribute('aria-expanded');
-      syncButtonState(initialExpanded === 'false' ? false : true);
+        const showLabel = button.dataset.showText || 'Show';
+        const hideLabel = button.dataset.hideText || 'Hide';
 
-      button.addEventListener('click', () => {
-        const expanded = button.getAttribute('aria-expanded') === 'true';
-        syncButtonState(!expanded);
+        const syncButtonState = (expanded) => {
+          button.setAttribute('aria-expanded', String(expanded));
+          slots.hidden = !expanded;
+          button.textContent = expanded ? hideLabel : showLabel;
+        };
+
+        const initialExpanded = button.getAttribute('aria-expanded');
+        syncButtonState(initialExpanded === 'false' ? false : true);
+
+        button.addEventListener('click', () => {
+          const expanded = button.getAttribute('aria-expanded') === 'true';
+          syncButtonState(!expanded);
+        });
       });
-    });
+    })();
   </script>
 </body>
 </html>
