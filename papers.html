@@ -107,6 +107,10 @@
         line-height: 1.6;
       }
 
+      .viewer-placeholder[hidden] {
+        display: none;
+      }
+
       .sidebar {
         border: 1px solid var(--muted);
         border-radius: 20px;
@@ -358,10 +362,12 @@
             matchingButtons.forEach((btn) => btn.setAttribute("aria-current", "true"));
             viewer.src = embedSrc;
             placeholder.hidden = true;
+            placeholder.setAttribute("aria-hidden", "true");
           } else {
             matchingButtons.forEach((btn) => btn.setAttribute("aria-current", "false"));
             viewer.src = "about:blank";
             placeholder.hidden = false;
+            placeholder.setAttribute("aria-hidden", "false");
           }
         };
 
