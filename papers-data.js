@@ -13,8 +13,8 @@ window.papersDocuments = [
 
 window.casualWritingDocuments = [
   {
-    title: "Casual musings on language learning",
-    id: "REPLACE_WITH_CASUAL_WRITING_DOC_ID_1",
+    title: "Trees 树",
+    id: "1QWREv_lyamYs3qNbkwL1WUkbdsF7mztK8QatJNmw-HI",
     type: "gdoc",
   },
   {
@@ -31,8 +31,8 @@ window.casualWritingDocuments = [
 
 window.galleryItems = [
   {
-    title: "Watercolor study of city lights",
-    id: "REPLACE_WITH_GALLERY_ITEM_ID_1",
+    title: "All Being Returns",
+    id: "1zI6Eoz0OHhpAf_-9y02CYp_vH0O9SkJg",
     type: "drive-file",
   },
   {
