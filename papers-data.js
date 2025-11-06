@@ -18,13 +18,13 @@ window.casualWritingDocuments = [
     type: "gdoc",
   },
   {
-    title: "A travel journal from the mountains",
-    id: "REPLACE_WITH_CASUAL_WRITING_DOC_ID_2",
+    title: "A Mezzo-sporano's Note",
+    id: "1Wz3vyFizfSffXYu4nwGygKt4vMJpiGqKcxmt1JTbh-U",
     type: "gdoc",
   },
   {
-    title: "Notes on community building",
-    id: "REPLACE_WITH_CASUAL_WRITING_DOC_ID_3",
+    title: "Maniads You See Them",
+    id: "1SEnEkJY8khJ9Eqna2n9wWXnHSbedEhEuK8Y1ev5thUQ",
     type: "gdoc",
   },
 ];
@@ -36,13 +36,33 @@ window.galleryItems = [
     type: "drive-file",
   },
   {
-    title: "Digital collage: fragments",
-    id: "REPLACE_WITH_GALLERY_ITEM_ID_2",
+    title: "Anji_1",
+    id: "136V_imvCUuwIbIFo5-CHsufLbi2HzSAq",
     type: "drive-file",
   },
   {
-    title: "Ink sketches from the café",
-    id: "REPLACE_WITH_GALLERY_ITEM_ID_3",
+    title: "Anji_2",
+    id: "1YNOtOHJn_9Vc3m3sH_EPZjjNCkhRrdRm",
+    type: "drive-file",
+  },
+  {
+    title: "Beijing_2",
+    id: "1Y5UHiarCOl9QgpaI007B2s7S1c83qHL3",
+    type: "drive-file",
+  },
+  {
+    title: "Beijing_1",
+    id: "1Aw7vM9sWiwESIP5EbBh3xhcaigRs41km",
+    type: "drive-file",
+  },
+  {
+    title: "Beijing_3",
+    id: "1o4lYu0iQZm1xihZ4ysaFr2MMAMDoyXbz",
+    type: "drive-file",
+  },
+  {
+    title: "Hangzhou_1",
+    id: "1OUb-D_88QU_b-VeTSwS30c2S2Dkaw0xV",
     type: "drive-file",
   },
 ];
