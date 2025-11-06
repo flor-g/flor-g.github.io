@@ -188,9 +188,10 @@
         width: min(1200px, 100%);
         margin: 3rem auto 3.5rem;
         padding: 0 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        column-gap: 2rem;
+        row-gap: 1.5rem;
         position: relative;
         z-index: 0;
       }
@@ -206,10 +207,11 @@
         border-radius: 20px;
         background: color-mix(in srgb, var(--background) 88%, transparent);
         display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 1rem;
         padding: 1rem;
+        grid-column: 1;
       }
 
       .gallery-viewer[hidden] {
@@ -252,6 +254,14 @@
         display: none;
       }
 
+      .gallery-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+        justify-content: center;
+      }
+
       .gallery-nav {
         flex: 0 0 auto;
         width: 44px;
@@ -284,6 +294,7 @@
         font-size: 0.95rem;
         line-height: 1.6;
         letter-spacing: 0.02em;
+        grid-column: 1;
       }
 
       .gallery-caption[hidden] {
@@ -293,6 +304,7 @@
       .gallery-empty-message {
         font-size: 0.95rem;
         line-height: 1.6;
+        grid-column: 1;
       }
 
       .gallery-empty-message[hidden] {
@@ -319,12 +331,19 @@
 
         .gallery-section {
           padding: 0 1rem;
+          grid-template-columns: 1fr;
+        }
+
+        .gallery-viewer,
+        .gallery-caption,
+        .gallery-empty-message {
+          grid-column: 1;
         }
       }
 
       @media (max-width: 640px) {
         .gallery-viewer {
-          gap: 0.5rem;
+          gap: 0.75rem;
           padding: 0.75rem;
         }
 
@@ -375,14 +394,6 @@
 
       <section class="gallery-section" aria-label="Visual gallery">
         <div class="gallery-viewer" id="gallery-viewer" hidden>
-          <button
-            type="button"
-            class="gallery-nav"
-            id="gallery-prev"
-            aria-label="View previous piece"
-          >
-            &#8592;
-          </button>
           <div class="gallery-frame">
             <iframe
               id="gallery-iframe"
@@ -396,14 +407,24 @@
               A preview will appear here when one is available.
             </div>
           </div>
-          <button
-            type="button"
-            class="gallery-nav"
-            id="gallery-next"
-            aria-label="View next piece"
-          >
-            &#8594;
-          </button>
+          <div class="gallery-controls">
+            <button
+              type="button"
+              class="gallery-nav"
+              id="gallery-prev"
+              aria-label="View previous piece"
+            >
+              &#8593;
+            </button>
+            <button
+              type="button"
+              class="gallery-nav"
+              id="gallery-next"
+              aria-label="View next piece"
+            >
+              &#8595;
+            </button>
+          </div>
         </div>
         <p class="gallery-caption" id="gallery-caption" hidden></p>
         <p class="gallery-empty-message" id="gallery-empty-message" hidden>
