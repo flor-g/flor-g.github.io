@@ -251,12 +251,14 @@
   <script src="papers-data.js"></script>
   <script>
     (function () {
-      const papersSlots = document.getElementById('papers-slots');
-      const documents = Array.isArray(window.papersDocuments)
-        ? window.papersDocuments.filter((doc) => doc && doc.title)
-        : [];
+      const normalizeDocuments = (value) =>
+        Array.isArray(value) ? value.filter((doc) => doc && doc.title) : [];
 
-      if (papersSlots && documents.length > 0) {
+      const populateSlots = (slotsElement, documents, { targetPage }) => {
+        if (!slotsElement || !documents.length) {
+          return;
+        }
+
         const fragment = document.createDocumentFragment();
 
         documents.forEach((doc) => {
@@ -267,12 +269,13 @@
           label.className = 'slot-link-label';
           label.textContent = doc.title;
 
+          let href = targetPage;
           if (doc.id && !String(doc.id).startsWith('REPLACE_WITH')) {
-            link.href = `papers.html?doc=${encodeURIComponent(doc.id)}`;
+            href = `${targetPage}?doc=${encodeURIComponent(doc.id)}`;
             link.setAttribute('data-doc-id', doc.id);
-          } else {
-            link.href = 'papers.html';
           }
+
+          link.href = href;
 
           const icon = document.createElement('span');
           icon.className = 'slot-link-icon';
@@ -283,8 +286,20 @@
           fragment.appendChild(link);
         });
 
-        papersSlots.replaceChildren(fragment);
-      }
+        slotsElement.replaceChildren(fragment);
+      };
+
+      populateSlots(
+        document.getElementById('papers-slots'),
+        normalizeDocuments(window.papersDocuments),
+        { targetPage: 'papers.html' }
+      );
+
+      populateSlots(
+        document.getElementById('writings-slots'),
+        normalizeDocuments(window.casualWritingDocuments),
+        { targetPage: 'writings.html' }
+      );
 
       document.querySelectorAll('.toggle-slots').forEach((button) => {
         const controlsId = button.getAttribute('aria-controls');
