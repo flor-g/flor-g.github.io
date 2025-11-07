@@ -4,204 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Personal Site</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      --background: #f6f6f6;
-      --foreground: #111;
-      --accent: #222;
-      --muted: #d0d0d0;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --background: #111;
-        --foreground: #f6f6f6;
-        --accent: #f6f6f6;
-        --muted: #333;
-      }
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--background);
-      color: var(--foreground);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      padding: 3rem 1.5rem 4rem;
-    }
-
-    .page-header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      max-width: 680px;
-      margin: 0 auto;
-      align-items: flex-start;
-    }
-
-    .page-header h1 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      letter-spacing: -0.02em;
-      font-weight: 600;
-    }
-
-    main {
-      flex: 1;
-      max-width: 960px;
-      width: 100%;
-      margin: 0 auto;
-      display: grid;
-      gap: 2.5rem;
-    }
-
-    section {
-      border: 1px solid var(--muted);
-      border-radius: 20px;
-      padding: 1.1rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .section-header h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-    }
-
-    .toggle-slots {
-      border: 1px solid var(--muted);
-      border-radius: 999px;
-      padding: 0.4rem 0.9rem;
-      background: transparent;
-      color: var(--foreground);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: border-color 0.7s ease, background 0.7s ease, color 0.7s ease;
-    }
-
-    .toggle-slots:hover,
-    .toggle-slots:focus-visible {
-      border-color: var(--accent);
-      background: var(--accent);
-      color: var(--background);
-      outline: none;
-    }
-
-    .slots {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1.25rem;
-    }
-
-    .slots[hidden] {
-      display: none !important;
-    }
-
-    section .slots[hidden] {
-      margin-top: 0;
-    }
-
-    .slot {
-      border-radius: 10px;
-      min-height: 48px;
-    }
-
-    .slot-placeholder {
-      border: 1px dashed var(--muted);
-    }
-
-    .slot-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      border: 1px solid var(--muted);
-      padding: 0.85rem 1rem;
-      text-decoration: none;
-      color: inherit;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
-    }
-
-    .slot-link:hover,
-    .slot-link:focus-visible {
-      border-color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 10%, transparent);
-      outline: none;
-    }
-
-    .slot-link-label {
-      flex: 1;
-    }
-
-    .slot-link-icon {
-      font-size: 1rem;
-      opacity: 0.65;
-    }
-
-    iframe {
-      border-radius: 10px;
-    }
-
-    p {
-      line-height: 1.5;
-    }
-
-    footer {
-      max-width: 680px;
-      margin: 0 auto;
-      border-top: 1px solid var(--muted);
-      padding-top: 1.5rem;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 2.5rem 1rem 3rem;
-      }
-
-      section {
-        padding: 1.5rem;
-      }
-
-      .toggle-sections {
-        padding: 0.35rem 0.75rem;
-        font-size: 0.8rem;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="home-page">
   <header class="page-header">
     <h1>Flora Gu | 顧 思悤</h1>
   </header>
 
   <main>
     <section id="intro">
+      <h2>A Visitor's Guide</h2>
       <p>
-        Quae res in civitate duae plurimum possunt, eae contra nos ambae faciunt in hoc tempore, summa gratia et eloquentia; quarum alterum, C. Aquili, vereor, alteram metuo. Eloquentia Q. Hortensi ne me in dicendo impediat, non nihil commoveor, gratia Sex. Naevi ne P. Quinctio noceat, id vero non mediocriter pertimesco. Neque hoc tanto opere querendum videretur, haec summa in illis esse, si in nobis essent saltem mediocria; verum ita se res habet, ut ego, qui neque usu satis et ingenio parum possum, cum patrono disertissimo comparer, P. Quinctius, cui tenues opes, nullae facultates, exiguae amicorum copiae sunt, cum adversario gratiosissimo contendat. Illud quoque nobis accedit incommodum, quod M. Iunius, qui hanc causam aliquotiens apud te egit, homo et in aliis causis exercitatus et in hac multum ac saepe versatus, hoc tempore abest nova legatione impeditus, et ad me ventum est qui, ut summa haberem cetera, temporis quidem certe vix satis habui ut rem tantam, tot controversiis implicatam, possem cognoscere. Ita quod mihi consuevit in ceteris causis esse adiumento, id quoque in hac causa deficit. Nam, quod ingenio minus possum, subsidium mihi diligentia comparavi; quae quanta sit, nisi tempus et spatium datum sit, intellegi non potest. Quae quo plura sunt, C. Aquili, eo te et hos qui tibi in consilio sunt meliore mente nostra verba audire oportebit, ut multis incommodis veritas debilitata tandem aequitate talium virorum recreetur. Quod si tu iudex nullo praesidio fuisse videbere contra vim et gratiam solitudini atque inopiae, si apud hoc consilium ex opibus, non ex veritate causa pendetur, profecto nihil est iam sanctum atque sincerum in civitate, nihil est quod humilitatem cuiusquam gravitas et virtus iudicis consoletur. Certe aut apud te et hos qui tibi adsunt veritas valebit, aut ex hoc loco repulsa vi et gratia locum ubi consistat reperire non poterit.
+        Hello there! I am Flora and this is an archive of me. I am born and raised in Shenzhen, a relatvely young city in Southern China. I spent the second half of my adolescence at an all-girl boarding high school in Massachusetts, USA. I am now an undergraduate student of Linguistics at University College London, UK. <br><br>If you are interested in my trajectory of thought, you are more than welcome to make yourself at home here. This site is still in construction, so please excuse the mess. If you are not too interested in the ambiguous part of me, I totally feel you---my résumé is at the bottom of this page. 
       </p>
     </section>
 
@@ -229,9 +43,21 @@
       </div>
     </section>
 
+     <section id="projects">
+      <header class="section-header">
+        <h2>Projects</h2>
+        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="projects-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
+      </header>
+      <div class="slots" id="projects-slots" hidden>
+        <div class="slot slot-placeholder" aria-label="Add paper link"></div>
+        <div class="slot slot-placeholder" aria-label="Add paper link"></div>
+        <div class="slot slot-placeholder" aria-label="Add paper link"></div>
+      </div>
+    </section>
+
     <section id="cv">
       <header class="section-header">
-        <h2>CV</h2>
+        <h2>Résumé</h2>
         <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="cv-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
       </header>
       <div class="slots" id="cv-slots" hidden>

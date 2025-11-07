@@ -9,6 +9,11 @@ window.papersDocuments = [
     id: "1RDmKZE2VVqdxT2PUA8vwbGUwc7NNb8nB3feQqPwCqNg",
     type: "gdoc",
   },
+  {
+    title: "Review: Words Jump-Start Vision: A Label Advantage in Object Recognition",
+    id: "1tuhHFsVKmIe4eM_2qW_gxG4b5-zmnYKG0IJtq8MErKE",
+    type: "gdoc",
+  },
 ];
 
 window.casualWritingDocuments = [
@@ -25,6 +30,11 @@ window.casualWritingDocuments = [
   {
     title: "Maniads You See Them",
     id: "1SEnEkJY8khJ9Eqna2n9wWXnHSbedEhEuK8Y1ev5thUQ",
+    type: "gdoc",
+  },
+  {
+    title: "Four Poems in Classical Chinese 诗四首",
+    id: "1Qgj9MisBwSL-reeSeubt3BSNhFonu-sloDsuPzfCrNU",
     type: "gdoc",
   },
 ];
