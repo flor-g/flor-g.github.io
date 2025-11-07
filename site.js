@@ -293,6 +293,8 @@
     emptyMessageId,
     prevButtonId,
     nextButtonId,
+    descriptionId,
+    descriptionPanelId,
   }) => {
     const items = Array.isArray(galleryItems)
       ? galleryItems.filter((item) => item && item.title)
@@ -305,10 +307,26 @@
     const galleryEmptyMessage = document.getElementById(emptyMessageId);
     const galleryPrevButton = document.getElementById(prevButtonId);
     const galleryNextButton = document.getElementById(nextButtonId);
+    const galleryDescriptionEl = descriptionId
+      ? document.getElementById(descriptionId)
+      : null;
+    const galleryDescriptionPanel = descriptionPanelId
+      ? document.getElementById(descriptionPanelId)
+      : galleryDescriptionEl?.closest('.gallery-description-panel') ?? null;
 
     if (!galleryViewer || !galleryEmptyMessage) {
       return;
     }
+
+    const defaultDescriptionMessage =
+      galleryDescriptionEl?.textContent?.trim() ||
+      'Select a gallery item to read its description.';
+
+    const setDescriptionMessage = (message) => {
+      if (galleryDescriptionEl) {
+        galleryDescriptionEl.textContent = message;
+      }
+    };
 
     const getGalleryEmbedSrc = (item) => {
       if (!item) {
@@ -347,6 +365,16 @@
       const item = items[activeGalleryIndex];
       const embedSrc = getGalleryEmbedSrc(item);
 
+      if (galleryDescriptionPanel) {
+        galleryDescriptionPanel.hidden = false;
+      }
+      if (galleryDescriptionEl) {
+        const descriptionText = item?.description
+          ? item.description
+          : 'No description available for this piece yet.';
+        setDescriptionMessage(descriptionText);
+      }
+
       if (galleryCaptionEl) {
         const captionText = item && item.title ? item.title : '';
         galleryCaptionEl.textContent = captionText;
@@ -381,11 +409,18 @@
           galleryCaptionEl.hidden = true;
           galleryCaptionEl.textContent = '';
         }
+        if (galleryDescriptionPanel) {
+          galleryDescriptionPanel.hidden = true;
+        }
+        setDescriptionMessage(defaultDescriptionMessage);
         return;
       }
 
       galleryViewer.hidden = false;
       galleryEmptyMessage.hidden = true;
+      if (galleryDescriptionPanel) {
+        galleryDescriptionPanel.hidden = false;
+      }
       syncGalleryControls();
       setActiveGalleryItem(activeGalleryIndex);
     };
@@ -446,6 +481,8 @@
         emptyMessageId: 'gallery-empty-message',
         prevButtonId: 'gallery-prev',
         nextButtonId: 'gallery-next',
+        descriptionId: 'gallery-description',
+        descriptionPanelId: 'gallery-description-panel',
       });
     }
   });
