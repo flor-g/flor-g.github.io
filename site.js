@@ -1,0 +1,452 @@
+(function () {
+  const hasValidDocId = (id) => {
+    if (!id && id !== 0) {
+      return false;
+    }
+
+    return !String(id).startsWith('REPLACE_WITH');
+  };
+
+  const googleWorkspacePreviewPaths = {
+    gdoc: 'document',
+    gsheet: 'spreadsheets',
+    gslide: 'presentation',
+  };
+
+  const googleWorkspaceMimePreviewPaths = {
+    'application/vnd.google-apps.document': 'document',
+    'application/vnd.google-apps.spreadsheet': 'spreadsheets',
+    'application/vnd.google-apps.presentation': 'presentation',
+  };
+
+  const getDocumentEmbedSrc = (doc) => {
+    if (!doc || !hasValidDocId(doc.id)) {
+      return null;
+    }
+
+    if (doc.embedUrl) {
+      return doc.embedUrl;
+    }
+
+    const typeKey = typeof doc.type === 'string' ? doc.type.toLowerCase() : '';
+    const workspacePath = googleWorkspacePreviewPaths[typeKey];
+
+    if (workspacePath) {
+      return `https://docs.google.com/${workspacePath}/d/${encodeURIComponent(doc.id)}/preview`;
+    }
+
+    const mimePath = doc.mimeType ? googleWorkspaceMimePreviewPaths[doc.mimeType] : undefined;
+    if (mimePath) {
+      return `https://docs.google.com/${mimePath}/d/${encodeURIComponent(doc.id)}/preview`;
+    }
+
+    const documentUrl = `https://drive.google.com/uc?export=download&id=${encodeURIComponent(doc.id)}`;
+    return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(documentUrl)}`;
+  };
+
+  const initHomePage = () => {
+    const normalizeDocuments = (value) =>
+      Array.isArray(value) ? value.filter((doc) => doc && doc.title) : [];
+
+    const populateSlots = (slotsElement, documents, { targetPage }) => {
+      if (!slotsElement || !documents.length) {
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      documents.forEach((doc) => {
+        const link = document.createElement('a');
+        link.className = 'slot slot-link';
+
+        const label = document.createElement('span');
+        label.className = 'slot-link-label';
+        label.textContent = doc.title;
+
+        let href = targetPage;
+        if (hasValidDocId(doc.id)) {
+          href = `${targetPage}?doc=${encodeURIComponent(doc.id)}`;
+          link.setAttribute('data-doc-id', doc.id);
+        }
+
+        link.href = href;
+
+        const icon = document.createElement('span');
+        icon.className = 'slot-link-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = '↗';
+
+        link.append(label, icon);
+        fragment.appendChild(link);
+      });
+
+      slotsElement.replaceChildren(fragment);
+    };
+
+    populateSlots(
+      document.getElementById('papers-slots'),
+      normalizeDocuments(window.papersDocuments),
+      { targetPage: 'papers.html' }
+    );
+
+    populateSlots(
+      document.getElementById('writings-slots'),
+      normalizeDocuments(window.casualWritingDocuments),
+      { targetPage: 'writings.html' }
+    );
+
+    document.querySelectorAll('.toggle-slots').forEach((button) => {
+      const controlsId = button.getAttribute('aria-controls');
+      const slots = controlsId
+        ? document.getElementById(controlsId)
+        : button.closest('section')?.querySelector('.slots');
+
+      if (!slots) {
+        return;
+      }
+
+      const showLabel = button.dataset.showText || 'Show';
+      const hideLabel = button.dataset.hideText || 'Hide';
+
+      const syncButtonState = (expanded) => {
+        button.setAttribute('aria-expanded', String(expanded));
+        slots.hidden = !expanded;
+        button.textContent = expanded ? hideLabel : showLabel;
+      };
+
+      const initialExpanded = button.getAttribute('aria-expanded');
+      syncButtonState(initialExpanded === 'false' ? false : true);
+
+      button.addEventListener('click', () => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        syncButtonState(!expanded);
+      });
+    });
+  };
+
+  const buildDocumentButton = (doc) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'document-button';
+    button.textContent = doc.title;
+    if (doc.id !== undefined) {
+      button.dataset.docId = doc.id;
+    }
+    button.setAttribute('aria-current', 'false');
+    return button;
+  };
+
+  const initDocumentPage = ({
+    documents,
+    viewerId,
+    placeholderId,
+    sidebarListId,
+    mobileListId,
+    urlParam = 'doc',
+  }) => {
+    const filteredDocuments = Array.isArray(documents)
+      ? documents.filter((doc) => doc && doc.title && doc.id)
+      : [];
+
+    const sidebarList = document.getElementById(sidebarListId);
+    const mobileList = document.getElementById(mobileListId);
+    const viewer = document.getElementById(viewerId);
+    const placeholder = document.getElementById(placeholderId);
+
+    if (!sidebarList || !mobileList || !viewer || !placeholder) {
+      return;
+    }
+
+    const documentLookup = new Map(filteredDocuments.map((doc) => [doc.id, doc]));
+    let buttons = [];
+
+    const syncPlaceholderVisibility = (isHidden) => {
+      placeholder.hidden = isHidden;
+      placeholder.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
+    };
+
+    const updateUrl = (docId, hasEmbed) => {
+      if (!window.history || typeof window.history.replaceState !== 'function') {
+        return;
+      }
+
+      const url = new URL(window.location.href);
+      if (hasEmbed && docId) {
+        url.searchParams.set(urlParam, docId);
+      } else {
+        url.searchParams.delete(urlParam);
+      }
+
+      window.history.replaceState(null, '', url);
+    };
+
+    const setActiveDocument = (docId, { allowUrlUpdate = true } = {}) => {
+      if (!buttons.length) {
+        viewer.src = 'about:blank';
+        syncPlaceholderVisibility(false);
+        if (allowUrlUpdate) {
+          updateUrl(null, false);
+        }
+        return false;
+      }
+
+      const doc = documentLookup.get(docId);
+      const embedSrc = doc ? getDocumentEmbedSrc(doc) : null;
+
+      buttons.forEach((btn) => {
+        const isMatch = btn.dataset.docId === docId && !!embedSrc;
+        btn.setAttribute('aria-current', isMatch ? 'true' : 'false');
+      });
+
+      if (embedSrc) {
+        viewer.src = embedSrc;
+        syncPlaceholderVisibility(true);
+        if (allowUrlUpdate) {
+          updateUrl(docId, true);
+        }
+        return true;
+      }
+
+      viewer.src = 'about:blank';
+      syncPlaceholderVisibility(false);
+      if (allowUrlUpdate) {
+        updateUrl(null, false);
+      }
+      return false;
+    };
+
+    const renderLists = () => {
+      if (!filteredDocuments.length) {
+        sidebarList.replaceChildren();
+        mobileList.replaceChildren();
+        buttons = [];
+        viewer.src = 'about:blank';
+        syncPlaceholderVisibility(false);
+        updateUrl(null, false);
+        return;
+      }
+
+      const createListItem = (doc) => {
+        const li = document.createElement('li');
+        const button = buildDocumentButton(doc);
+        li.appendChild(button);
+        return { li, button };
+      };
+
+      const sidebarItems = filteredDocuments.map(createListItem);
+      const mobileItems = filteredDocuments.map(createListItem);
+
+      sidebarList.replaceChildren(...sidebarItems.map((item) => item.li));
+      mobileList.replaceChildren(...mobileItems.map((item) => item.li));
+
+      buttons = [
+        ...sidebarItems.map((item) => item.button),
+        ...mobileItems.map((item) => item.button),
+      ];
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          setActiveDocument(button.dataset.docId);
+        });
+      });
+    };
+
+    const getRequestedDocId = () => {
+      const params = new URLSearchParams(window.location.search);
+      const requestedId = params.get(urlParam);
+      return requestedId && documentLookup.has(requestedId) ? requestedId : null;
+    };
+
+    renderLists();
+
+    if (!buttons.length) {
+      return;
+    }
+
+    let hasActiveDocument = false;
+    const requestedId = getRequestedDocId();
+
+    if (requestedId) {
+      hasActiveDocument = setActiveDocument(requestedId, { allowUrlUpdate: false });
+    }
+
+    if (!hasActiveDocument) {
+      for (const button of buttons) {
+        if (setActiveDocument(button.dataset.docId, { allowUrlUpdate: false })) {
+          hasActiveDocument = true;
+          break;
+        }
+      }
+    }
+
+    if (!hasActiveDocument) {
+      updateUrl(null, false);
+    }
+  };
+
+  const initGallery = ({
+    galleryItems,
+    viewerId,
+    iframeId,
+    placeholderId,
+    captionId,
+    emptyMessageId,
+    prevButtonId,
+    nextButtonId,
+  }) => {
+    const items = Array.isArray(galleryItems)
+      ? galleryItems.filter((item) => item && item.title)
+      : [];
+
+    const galleryViewer = document.getElementById(viewerId);
+    const galleryIframe = document.getElementById(iframeId);
+    const galleryPlaceholderEl = document.getElementById(placeholderId);
+    const galleryCaptionEl = document.getElementById(captionId);
+    const galleryEmptyMessage = document.getElementById(emptyMessageId);
+    const galleryPrevButton = document.getElementById(prevButtonId);
+    const galleryNextButton = document.getElementById(nextButtonId);
+
+    if (!galleryViewer || !galleryEmptyMessage) {
+      return;
+    }
+
+    const getGalleryEmbedSrc = (item) => {
+      if (!item) {
+        return null;
+      }
+
+      if (item.embedUrl) {
+        return item.embedUrl;
+      }
+
+      if (hasValidDocId(item.id)) {
+        return `https://drive.google.com/file/d/${encodeURIComponent(item.id)}/preview`;
+      }
+
+      return null;
+    };
+
+    let activeGalleryIndex = 0;
+
+    const syncGalleryControls = () => {
+      if (!galleryPrevButton || !galleryNextButton) {
+        return;
+      }
+
+      const multiple = items.length > 1;
+      galleryPrevButton.disabled = !multiple;
+      galleryNextButton.disabled = !multiple;
+    };
+
+    const setActiveGalleryItem = (index = 0) => {
+      if (!items.length) {
+        return;
+      }
+
+      activeGalleryIndex = (index + items.length) % items.length;
+      const item = items[activeGalleryIndex];
+      const embedSrc = getGalleryEmbedSrc(item);
+
+      if (galleryCaptionEl) {
+        const captionText = item && item.title ? item.title : '';
+        galleryCaptionEl.textContent = captionText;
+        galleryCaptionEl.hidden = !captionText;
+      }
+
+      if (embedSrc) {
+        if (galleryIframe) {
+          galleryIframe.src = embedSrc;
+          galleryIframe.hidden = false;
+        }
+        if (galleryPlaceholderEl) {
+          galleryPlaceholderEl.hidden = true;
+        }
+      } else {
+        if (galleryIframe) {
+          galleryIframe.src = 'about:blank';
+          galleryIframe.hidden = true;
+        }
+        if (galleryPlaceholderEl) {
+          galleryPlaceholderEl.textContent = 'Provide a Google Drive file ID to preview this piece.';
+          galleryPlaceholderEl.hidden = false;
+        }
+      }
+    };
+
+    const renderGallery = () => {
+      if (!items.length) {
+        galleryViewer.hidden = true;
+        galleryEmptyMessage.hidden = false;
+        if (galleryCaptionEl) {
+          galleryCaptionEl.hidden = true;
+          galleryCaptionEl.textContent = '';
+        }
+        return;
+      }
+
+      galleryViewer.hidden = false;
+      galleryEmptyMessage.hidden = true;
+      syncGalleryControls();
+      setActiveGalleryItem(activeGalleryIndex);
+    };
+
+    if (galleryPrevButton) {
+      galleryPrevButton.addEventListener('click', () => {
+        setActiveGalleryItem(activeGalleryIndex - 1);
+      });
+    }
+
+    if (galleryNextButton) {
+      galleryNextButton.addEventListener('click', () => {
+        setActiveGalleryItem(activeGalleryIndex + 1);
+      });
+    }
+
+    renderGallery();
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+
+    if (!body) {
+      return;
+    }
+
+    if (body.classList.contains('home-page')) {
+      initHomePage();
+      return;
+    }
+
+    if (body.classList.contains('papers-page')) {
+      initDocumentPage({
+        documents: window.papersDocuments,
+        viewerId: 'paper-viewer',
+        placeholderId: 'viewer-placeholder',
+        sidebarListId: 'sidebar-document-list',
+        mobileListId: 'mobile-document-list',
+      });
+      return;
+    }
+
+    if (body.classList.contains('writings-page')) {
+      initDocumentPage({
+        documents: window.casualWritingDocuments,
+        viewerId: 'writing-viewer',
+        placeholderId: 'viewer-placeholder',
+        sidebarListId: 'sidebar-document-list',
+        mobileListId: 'mobile-document-list',
+      });
+
+      initGallery({
+        galleryItems: window.galleryItems,
+        viewerId: 'gallery-viewer',
+        iframeId: 'gallery-iframe',
+        placeholderId: 'gallery-placeholder',
+        captionId: 'gallery-caption',
+        emptyMessageId: 'gallery-empty-message',
+        prevButtonId: 'gallery-prev',
+        nextButtonId: 'gallery-next',
+      });
+    }
+  });
+})();
