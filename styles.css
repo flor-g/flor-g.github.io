@@ -40,6 +40,11 @@ p {
   line-height: 1.5;
 }
 
+h2 {
+  padding: 1rem;
+  padding-left: 0rem;
+}
+
 /* Home page ------------------------------------------------------------- */
 
 .home-page {
