@@ -295,6 +295,7 @@
     nextButtonId,
     descriptionId,
     descriptionPanelId,
+    transcriptionId,
   }) => {
     const items = Array.isArray(galleryItems)
       ? galleryItems.filter((item) => item && item.title)
@@ -313,6 +314,9 @@
     const galleryDescriptionPanel = descriptionPanelId
       ? document.getElementById(descriptionPanelId)
       : galleryDescriptionEl?.closest('.gallery-description-panel') ?? null;
+    const galleryTranscriptionEl = transcriptionId
+      ? document.getElementById(transcriptionId)
+      : null;
 
     if (!galleryViewer || !galleryEmptyMessage) {
       return;
@@ -321,10 +325,19 @@
     const defaultDescriptionMessage =
       galleryDescriptionEl?.textContent?.trim() ||
       'Select a gallery item to read its description.';
+    const defaultTranscriptionMessage =
+      galleryTranscriptionEl?.textContent?.trim() ||
+      'Select a gallery item to read its transcription.';
 
     const setDescriptionMessage = (message) => {
       if (galleryDescriptionEl) {
         galleryDescriptionEl.textContent = message;
+      }
+    };
+
+    const setTranscriptionMessage = (message) => {
+      if (galleryTranscriptionEl) {
+        galleryTranscriptionEl.textContent = message;
       }
     };
 
@@ -368,6 +381,14 @@
       if (galleryDescriptionPanel) {
         galleryDescriptionPanel.hidden = false;
       }
+      if (galleryTranscriptionEl) {
+        const transcriptionText = item?.transcription?.trim();
+        const transcriptionMessage = transcriptionText
+          ? item.transcription
+          : 'No transcription available for this piece yet.';
+        setTranscriptionMessage(transcriptionMessage);
+      }
+
       if (galleryDescriptionEl) {
         const descriptionText = item?.description
           ? item.description
@@ -413,6 +434,7 @@
           galleryDescriptionPanel.hidden = true;
         }
         setDescriptionMessage(defaultDescriptionMessage);
+        setTranscriptionMessage(defaultTranscriptionMessage);
         return;
       }
 
@@ -483,6 +505,7 @@
         nextButtonId: 'gallery-next',
         descriptionId: 'gallery-description',
         descriptionPanelId: 'gallery-description-panel',
+        transcriptionId: 'gallery-transcription',
       });
     }
   });
