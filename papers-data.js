@@ -39,6 +39,24 @@ window.casualWritingDocuments = [
   },
 ];
 
+window.projectItems = [
+  {
+    title: 'Toolkit for an experimental syntax reserach project',
+    url: 'https://github.com/flor-g/VP-dependency-in-sluices',
+    description: '',
+  },
+  {
+    title: 'Undergraduate thesis in progress',
+    url: 'https://github.com/flor-g/Undergraduate-thesis',
+    description: '',
+  },
+  {
+    title: 'Circustreams Studio Ltd.',
+    url: 'https://flor-g.github.io/circustreams/',
+    description: '',
+  },
+];
+
 window.galleryItems = [
   {
     title: "All Being Returns",

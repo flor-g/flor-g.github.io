@@ -48,7 +48,9 @@
     const normalizeDocuments = (value) =>
       Array.isArray(value) ? value.filter((doc) => doc && doc.title) : [];
 
-    const populateSlots = (slotsElement, documents, { targetPage }) => {
+    const populateSlots = (slotsElement, documents, options = {}) => {
+      const { targetPage = null } = options;
+
       if (!slotsElement || !documents.length) {
         return;
       }
@@ -56,6 +58,21 @@
       const fragment = document.createDocumentFragment();
 
       documents.forEach((doc) => {
+        let href = null;
+
+        if (doc && typeof doc.url === 'string' && doc.url.trim()) {
+          href = doc.url.trim();
+        } else if (targetPage) {
+          href = targetPage;
+          if (hasValidDocId(doc.id)) {
+            href = `${targetPage}?doc=${encodeURIComponent(doc.id)}`;
+          }
+        }
+
+        if (!href) {
+          return;
+        }
+
         const link = document.createElement('a');
         link.className = 'slot slot-link';
 
@@ -63,13 +80,16 @@
         label.className = 'slot-link-label';
         label.textContent = doc.title;
 
-        let href = targetPage;
-        if (hasValidDocId(doc.id)) {
-          href = `${targetPage}?doc=${encodeURIComponent(doc.id)}`;
+        link.href = href;
+
+        if (targetPage && href.startsWith(`${targetPage}?`) && hasValidDocId(doc.id)) {
           link.setAttribute('data-doc-id', doc.id);
         }
 
-        link.href = href;
+        if (doc.url && /^https?:/i.test(doc.url)) {
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
 
         const icon = document.createElement('span');
         icon.className = 'slot-link-icon';
@@ -93,6 +113,12 @@
       document.getElementById('writings-slots'),
       normalizeDocuments(window.casualWritingDocuments),
       { targetPage: 'writings.html' }
+    );
+
+    populateSlots(
+      document.getElementById('projects-slots'),
+      normalizeDocuments(window.projectItems),
+      { targetPage: null }
     );
 
     document.querySelectorAll('.toggle-slots').forEach((button) => {
