@@ -93,8 +93,18 @@ window.galleryItems = [
 
 window.soundGalleryItems = [
   {
-    title: "雨夜 (Rainy Night)",
+    title: "Metamorphoses1",
     embedUrl:
       "https://www.youtube-nocookie.com/embed/M3LbR33WUjA?rel=0&modestbranding=1",
+  },
+  {
+    title: "Metamorphoses2",
+    embedUrl:
+      "https://www.youtube-nocookie.com/embed/ok95zISa10s?rel=0&modestbranding=1",
+  },
+  {
+    title: "BachPrelude1",
+    embedUrl:
+      "https://www.youtube-nocookie.com/embed/v2etCKVbJ3k?rel=0&modestbranding=1",
   },
 ];
