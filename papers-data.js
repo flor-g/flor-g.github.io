@@ -96,6 +96,5 @@ window.soundGalleryItems = [
     title: "雨夜 (Rainy Night)",
     embedUrl:
       "https://www.youtube-nocookie.com/embed/M3LbR33WUjA?rel=0&modestbranding=1",
-    description: "A collage of field recordings and synth experiments from a summer thunderstorm.",
   },
 ];

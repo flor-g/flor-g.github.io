@@ -477,12 +477,9 @@
         viewerId: 'sound-gallery-viewer',
         iframeId: 'sound-gallery-iframe',
         placeholderId: 'sound-gallery-placeholder',
-        captionId: 'sound-gallery-caption',
         emptyMessageId: 'sound-gallery-empty',
         prevButtonId: 'sound-gallery-prev',
         nextButtonId: 'sound-gallery-next',
-        descriptionId: 'sound-gallery-description',
-        descriptionPanelId: 'sound-gallery-description-panel',
       });
 
       return;
