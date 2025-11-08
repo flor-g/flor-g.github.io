@@ -1,13 +1,3 @@
-class ProjectItem {
-  constructor({ title, url, description }) {
-    this.title = title;
-    this.url = url;
-    this.description = description;
-  }
-}
-
-window.ProjectItem = ProjectItem;
-
 window.papersDocuments = [
   {
     title: "Does verb-preposition dependence modulate sluicing acceptability in English, and its implications?",
@@ -50,21 +40,21 @@ window.casualWritingDocuments = [
 ];
 
 window.projectItems = [
-  new ProjectItem({
-    title: 'Personal Website Source',
-    url: 'https://github.com/flor-g/flor-g.github.io',
-    description: 'The codebase for this site, built with plain HTML, CSS, and JavaScript.',
-  }),
-  new ProjectItem({
-    title: 'Syntactic Islands Toolkit',
-    url: 'https://github.com/flor-g',
-    description: 'A collection of scripts for analyzing acceptability-judgment experiments.',
-  }),
-  new ProjectItem({
-    title: 'Field Notes Archive',
-    url: 'https://www.ucl.ac.uk/linguistics/',
-    description: 'Documentation and resources that inspired my field methods coursework.',
-  }),
+  {
+    title: 'Toolkit for an experimental syntax reserach project',
+    url: 'https://github.com/flor-g/VP-dependency-in-sluices',
+    description: '',
+  },
+  {
+    title: 'Undergraduate thesis in progress',
+    url: 'https://github.com/flor-g/Undergraduate-thesis',
+    description: '',
+  },
+  {
+    title: 'Circustreams Studio Ltd.',
+    url: 'https://flor-g.github.io/circustreams/',
+    description: '',
+  },
 ];
 
 window.galleryItems = [
