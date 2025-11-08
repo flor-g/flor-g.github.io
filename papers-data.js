@@ -90,3 +90,12 @@ window.galleryItems = [
     transcription: "民國二十五年五月[]吉立  堇阝县弟子陈茂生[]子祥斌重修",
   },
 ];
+
+window.soundGalleryItems = [
+  {
+    title: "雨夜 (Rainy Night)",
+    embedUrl:
+      "https://www.youtube-nocookie.com/embed/M3LbR33WUjA?rel=0&modestbranding=1",
+    description: "A collage of field recordings and synth experiments from a summer thunderstorm.",
+  },
+];

@@ -49,8 +49,7 @@
       </div>
     </section>
 
-    </section>
-     <section id="cv">
+    <section id="cv">
       <header class="section-header">
         <h2>Résumé</h2>
         <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="cv-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
@@ -67,20 +66,61 @@
         ></iframe>
       </div>
     </section>
-    <section id="cv">
+    <section id="sounds">
       <header class="section-header">
         <h2>Sounds I made</h2>
       </header>
-      <iframe
-        src="https://www.youtube-nocookie.com/embed/M3LbR33WUjA?rel=0&modestbranding=1"
-        title="YouTube video player"
-        width="336" height="189"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        loading="lazy"
-        allowfullscreen
-        ></iframe>
+      <div class="sound-gallery">
+        <div class="gallery-viewer" id="sound-gallery-viewer" hidden>
+          <div class="gallery-frame">
+            <iframe
+              id="sound-gallery-iframe"
+              class="gallery-embed"
+              title="Sound gallery player"
+              src="about:blank"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              hidden
+            ></iframe>
+            <div class="gallery-placeholder" id="sound-gallery-placeholder">
+              Select a track to preview it here.
+            </div>
+          </div>
+          <div class="gallery-controls">
+            <button
+              type="button"
+              class="gallery-nav"
+              id="sound-gallery-prev"
+              aria-label="Play previous track"
+            >
+              &#8592;
+            </button>
+            <button
+              type="button"
+              class="gallery-nav"
+              id="sound-gallery-next"
+              aria-label="Play next track"
+            >
+              &#8594;
+            </button>
+          </div>
+        </div>
+        <div
+          class="gallery-description-panel"
+          id="sound-gallery-description-panel"
+          hidden
+        >
+          <h3 class="gallery-description-title">About this track</h3>
+          <p class="gallery-description" id="sound-gallery-description">
+            Select a track to read its description.
+          </p>
+        </div>
+        <p class="gallery-caption" id="sound-gallery-caption" hidden></p>
+        <p class="gallery-empty-message" id="sound-gallery-empty" hidden>
+          No tracks yet.
+        </p>
+      </div>
+    </section>
   </main>
 
   <footer></footer>
