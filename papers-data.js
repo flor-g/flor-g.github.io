@@ -28,7 +28,7 @@ window.casualWritingDocuments = [
     type: "gdoc",
   },
   {
-    title: "Maniads You See Them",
+    title: "Maniacs You See Them",
     id: "1SEnEkJY8khJ9Eqna2n9wWXnHSbedEhEuK8Y1ev5thUQ",
     type: "gdoc",
   },
