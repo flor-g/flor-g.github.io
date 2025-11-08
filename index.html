@@ -21,31 +21,25 @@
 
     <section id="papers">
       <header class="section-header">
-        <h2>Papers &amp; Essays</h2>
+        <h2>Papers &amp; Essays </h2>
         <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="papers-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
       </header>
       <div class="slots" id="papers-slots" hidden>
-        <div class="slot slot-placeholder" aria-label="Add paper link"></div>
-        <div class="slot slot-placeholder" aria-label="Add paper link"></div>
-        <div class="slot slot-placeholder" aria-label="Add paper link"></div>
       </div>
     </section>
 
     <section id="writings">
       <header class="section-header">
-        <h2>Casual writings &amp; Collection of folk texts </h2>
+        <h2>Casual writings with Gallery of folk texts</h2>
         <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="writings-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
       </header>
       <div class="slots" id="writings-slots" hidden>
-        <div class="slot slot-placeholder" aria-label="Add writing link"></div>
-        <div class="slot slot-placeholder" aria-label="Add writing link"></div>
-        <div class="slot slot-placeholder" aria-label="Add writing link"></div>
       </div>
     </section>
 
      <section id="projects">
       <header class="section-header">
-        <h2>Projects</h2>
+        <h2>Projects, coding or not coding</h2>
         <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="projects-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
       </header>
       <div class="slots" id="projects-slots" hidden>
@@ -55,8 +49,7 @@
       </div>
     </section>
 
-    </section>
-     <section id="cv">
+    <section id="cv">
       <header class="section-header">
         <h2>Résumé</h2>
         <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="cv-slots" data-show-text="Show" data-hide-text="Hide">Show</button>
@@ -73,20 +66,47 @@
         ></iframe>
       </div>
     </section>
-    <section id="cv">
+    <section id="sounds">
       <header class="section-header">
-        <h2>Sounds</h2>
+        <h2>Sounds I made</h2>
       </header>
-      <iframe
-        src="https://www.youtube-nocookie.com/embed/M3LbR33WUjA?rel=0&modestbranding=1"
-        title="YouTube video player"
-        width="560" height="315"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        loading="lazy"
-        allowfullscreen
-        ></iframe>
+      <div class="sound-gallery">
+        <div class="gallery-viewer" id="sound-gallery-viewer" hidden>
+          <div class="gallery-frame">
+            <iframe
+              id="sound-gallery-iframe"
+              class="gallery-embed"
+              title="Sound gallery player"
+              src="about:blank"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              hidden
+            ></iframe>
+          </div>
+          <div class="gallery-controls">
+            <button
+              type="button"
+              class="gallery-nav"
+              id="sound-gallery-prev"
+              aria-label="Play previous track"
+            >
+              &#8592;
+            </button>
+            <button
+              type="button"
+              class="gallery-nav"
+              id="sound-gallery-next"
+              aria-label="Play next track"
+            >
+              &#8594;
+            </button>
+          </div>
+        </div>
+        <p class="gallery-empty-message" id="sound-gallery-empty" hidden>
+          No tracks yet.
+        </p>
+      </div>
+    </section>
   </main>
 
   <footer></footer>

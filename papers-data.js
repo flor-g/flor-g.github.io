@@ -28,7 +28,7 @@ window.casualWritingDocuments = [
     type: "gdoc",
   },
   {
-    title: "Maniads You See Them",
+    title: "Maniacs You See Them",
     id: "1SEnEkJY8khJ9Eqna2n9wWXnHSbedEhEuK8Y1ev5thUQ",
     type: "gdoc",
   },
@@ -44,35 +44,67 @@ window.galleryItems = [
     title: "All Being Returns",
     id: "1zI6Eoz0OHhpAf_-9y02CYp_vH0O9SkJg",
     type: "drive-file",
+    description: " This is the first character of the phrase 南無阿彌陀佛 (May all return to Amitābha). Wall of Lingfeng temple(靈峰寺)",
+    transcription: "南",
   },
   {
     title: "Anji_1",
     id: "136V_imvCUuwIbIFo5-CHsufLbi2HzSAq",
     type: "drive-file",
+    description: "Inside Lingfeng temple(靈峰寺)",
+    transcription: "/",
   },
   {
     title: "Anji_2",
     id: "1YNOtOHJn_9Vc3m3sH_EPZjjNCkhRrdRm",
     type: "drive-file",
+    description: "peaceful(an/安) and pleasant(ji/吉). Lingfeng temple(靈峰寺).",
+    transcription: "安且吉兮",
   },
   {
     title: "Beijing_2",
     id: "1Y5UHiarCOl9QgpaI007B2s7S1c83qHL3",
     type: "drive-file",
+    description: "",
+    transcription: "彩灯高照平安[] 春日祥和幸福年",
   },
   {
     title: "Beijing_1",
     id: "1Aw7vM9sWiwESIP5EbBh3xhcaigRs41km",
     type: "drive-file",
+    description: "",
+    transcription: "家庭装（修）刮腻子刷漆，水电  室内打阁楼定做  定做断桥铝门窗，做  贴墙地砖，先施工后[]款  电话",
   },
   {
     title: "Beijing_3",
     id: "1o4lYu0iQZm1xihZ4ysaFr2MMAMDoyXbz",
     type: "drive-file",
+    description: "Grand morning market.",
+    transcription: "大早市",
   },
   {
     title: "Hangzhou_1",
     id: "1OUb-D_88QU_b-VeTSwS30c2S2Dkaw0xV",
     type: "drive-file",
+    description: "Pleasantly established on the 25th year of Republican era  堇阝county's youth Chen Mao Sheng [] Xiang Bin renovated.",
+    transcription: "民國二十五年五月[]吉立  堇阝县弟子陈茂生[]子祥斌重修",
+  },
+];
+
+window.soundGalleryItems = [
+  {
+    title: "Metamorphoses1",
+    embedUrl:
+      "https://www.youtube-nocookie.com/embed/M3LbR33WUjA?rel=0&modestbranding=1",
+  },
+  {
+    title: "Metamorphoses2",
+    embedUrl:
+      "https://www.youtube-nocookie.com/embed/ok95zISa10s?rel=0&modestbranding=1",
+  },
+  {
+    title: "BachPrelude1",
+    embedUrl:
+      "https://www.youtube-nocookie.com/embed/v2etCKVbJ3k?rel=0&modestbranding=1",
   },
 ];

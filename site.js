@@ -293,6 +293,9 @@
     emptyMessageId,
     prevButtonId,
     nextButtonId,
+    descriptionId,
+    descriptionPanelId,
+    transcriptionId,
   }) => {
     const items = Array.isArray(galleryItems)
       ? galleryItems.filter((item) => item && item.title)
@@ -305,10 +308,38 @@
     const galleryEmptyMessage = document.getElementById(emptyMessageId);
     const galleryPrevButton = document.getElementById(prevButtonId);
     const galleryNextButton = document.getElementById(nextButtonId);
+    const galleryDescriptionEl = descriptionId
+      ? document.getElementById(descriptionId)
+      : null;
+    const galleryDescriptionPanel = descriptionPanelId
+      ? document.getElementById(descriptionPanelId)
+      : galleryDescriptionEl?.closest('.gallery-description-panel') ?? null;
+    const galleryTranscriptionEl = transcriptionId
+      ? document.getElementById(transcriptionId)
+      : null;
 
     if (!galleryViewer || !galleryEmptyMessage) {
       return;
     }
+
+    const defaultDescriptionMessage =
+      galleryDescriptionEl?.textContent?.trim() ||
+      'Select a gallery item to read its description.';
+    const defaultTranscriptionMessage =
+      galleryTranscriptionEl?.textContent?.trim() ||
+      'Select a gallery item to read its transcription.';
+
+    const setDescriptionMessage = (message) => {
+      if (galleryDescriptionEl) {
+        galleryDescriptionEl.textContent = message;
+      }
+    };
+
+    const setTranscriptionMessage = (message) => {
+      if (galleryTranscriptionEl) {
+        galleryTranscriptionEl.textContent = message;
+      }
+    };
 
     const getGalleryEmbedSrc = (item) => {
       if (!item) {
@@ -347,6 +378,24 @@
       const item = items[activeGalleryIndex];
       const embedSrc = getGalleryEmbedSrc(item);
 
+      if (galleryDescriptionPanel) {
+        galleryDescriptionPanel.hidden = false;
+      }
+      if (galleryTranscriptionEl) {
+        const transcriptionText = item?.transcription?.trim();
+        const transcriptionMessage = transcriptionText
+          ? item.transcription
+          : 'No transcription available for this piece yet.';
+        setTranscriptionMessage(transcriptionMessage);
+      }
+
+      if (galleryDescriptionEl) {
+        const descriptionText = item?.description
+          ? item.description
+          : 'No description available for this piece yet.';
+        setDescriptionMessage(descriptionText);
+      }
+
       if (galleryCaptionEl) {
         const captionText = item && item.title ? item.title : '';
         galleryCaptionEl.textContent = captionText;
@@ -381,11 +430,19 @@
           galleryCaptionEl.hidden = true;
           galleryCaptionEl.textContent = '';
         }
+        if (galleryDescriptionPanel) {
+          galleryDescriptionPanel.hidden = true;
+        }
+        setDescriptionMessage(defaultDescriptionMessage);
+        setTranscriptionMessage(defaultTranscriptionMessage);
         return;
       }
 
       galleryViewer.hidden = false;
       galleryEmptyMessage.hidden = true;
+      if (galleryDescriptionPanel) {
+        galleryDescriptionPanel.hidden = false;
+      }
       syncGalleryControls();
       setActiveGalleryItem(activeGalleryIndex);
     };
@@ -414,6 +471,17 @@
 
     if (body.classList.contains('home-page')) {
       initHomePage();
+
+      initGallery({
+        galleryItems: window.soundGalleryItems,
+        viewerId: 'sound-gallery-viewer',
+        iframeId: 'sound-gallery-iframe',
+        placeholderId: 'sound-gallery-placeholder',
+        emptyMessageId: 'sound-gallery-empty',
+        prevButtonId: 'sound-gallery-prev',
+        nextButtonId: 'sound-gallery-next',
+      });
+
       return;
     }
 
@@ -446,6 +514,9 @@
         emptyMessageId: 'gallery-empty-message',
         prevButtonId: 'gallery-prev',
         nextButtonId: 'gallery-next',
+        descriptionId: 'gallery-description',
+        descriptionPanelId: 'gallery-description-panel',
+        transcriptionId: 'gallery-transcription',
       });
     }
   });
