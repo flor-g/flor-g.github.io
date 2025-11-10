@@ -6,7 +6,7 @@
     <title>Casual Writings &amp; Gallery</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="document-page writings-page">
+  <body class="document-page writings-page" data-documents-key="casualWritingDocuments">
     <div class="page">
       <header class="top-bar">
         <a class="back-link" href="index.html">&#8592; Back</a>
@@ -16,14 +16,11 @@
       <main>
         <section class="viewer" aria-label="Writing viewer">
           <iframe
-            id="writing-viewer"
+            id="document-viewer"
             title="Casual writing viewer"
             src="about:blank"
             allow="fullscreen"
           ></iframe>
-          <div class="viewer-placeholder" id="viewer-placeholder">
-            Select a casual writing from the list to view it here.
-          </div>
         </section>
 
         <aside class="sidebar" aria-label="Casual writings">
@@ -51,9 +48,6 @@
               allow="fullscreen"
               hidden
             ></iframe>
-            <div class="gallery-placeholder" id="gallery-placeholder">
-              A preview will appear here when one is available.
-            </div>
           </div>
           <div class="gallery-controls">
             <button

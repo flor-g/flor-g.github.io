@@ -44,12 +44,45 @@
     return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(documentUrl)}`;
   };
 
+  const createArrowIcon = () => {
+    const icon = document.createElement('span');
+    icon.className = 'slot-link-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = '↗';
+    return icon;
+  };
+
+  const createGithubIcon = () => {
+    const wrapper = document.createElement('span');
+    wrapper.className = 'slot-link-icon slot-link-icon--github';
+    wrapper.setAttribute('aria-hidden', 'true');
+
+    const svgNamespace = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNamespace, 'svg');
+    svg.setAttribute('viewBox', '0 0 16 16');
+    svg.setAttribute('width', '16');
+    svg.setAttribute('height', '16');
+    svg.setAttribute('focusable', 'false');
+    svg.setAttribute('aria-hidden', 'true');
+
+    const path = document.createElementNS(svgNamespace, 'path');
+    path.setAttribute('fill', 'currentColor');
+    path.setAttribute(
+      'd',
+      'M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z'
+    );
+
+    svg.appendChild(path);
+    wrapper.appendChild(svg);
+    return wrapper;
+  };
+
   const initHomePage = () => {
     const normalizeDocuments = (value) =>
       Array.isArray(value) ? value.filter((doc) => doc && doc.title) : [];
 
     const populateSlots = (slotsElement, documents, options = {}) => {
-      const { targetPage = null } = options;
+      const { targetPage = null, iconRenderer = null } = options;
 
       if (!slotsElement || !documents.length) {
         return;
@@ -91,10 +124,8 @@
           link.rel = 'noopener noreferrer';
         }
 
-        const icon = document.createElement('span');
-        icon.className = 'slot-link-icon';
-        icon.setAttribute('aria-hidden', 'true');
-        icon.textContent = '↗';
+        const icon =
+          typeof iconRenderer === 'function' ? iconRenderer(doc) : createArrowIcon();
 
         link.append(label, icon);
         fragment.appendChild(link);
@@ -118,7 +149,11 @@
     populateSlots(
       document.getElementById('projects-slots'),
       normalizeDocuments(window.projectItems),
-      { targetPage: null }
+      {
+        targetPage: null,
+        iconRenderer: (doc) =>
+          doc?.url && /github\.com/i.test(doc.url) ? createGithubIcon() : createArrowIcon(),
+      }
     );
 
     document.querySelectorAll('.toggle-slots').forEach((button) => {
@@ -133,11 +168,16 @@
 
       const showLabel = button.dataset.showText || 'Show';
       const hideLabel = button.dataset.hideText || 'Hide';
+      const textLabel = button.querySelector('.toggle-slots-text');
 
       const syncButtonState = (expanded) => {
         button.setAttribute('aria-expanded', String(expanded));
         slots.hidden = !expanded;
-        button.textContent = expanded ? hideLabel : showLabel;
+        if (textLabel) {
+          textLabel.textContent = expanded ? hideLabel : showLabel;
+        } else {
+          button.setAttribute('aria-label', expanded ? hideLabel : showLabel);
+        }
       };
 
       const initialExpanded = button.getAttribute('aria-expanded');
@@ -165,7 +205,6 @@
   const initDocumentPage = ({
     documents,
     viewerId,
-    placeholderId,
     sidebarListId,
     mobileListId,
     urlParam = 'doc',
@@ -177,19 +216,13 @@
     const sidebarList = document.getElementById(sidebarListId);
     const mobileList = document.getElementById(mobileListId);
     const viewer = document.getElementById(viewerId);
-    const placeholder = document.getElementById(placeholderId);
 
-    if (!sidebarList || !mobileList || !viewer || !placeholder) {
+    if (!sidebarList || !mobileList || !viewer) {
       return;
     }
 
     const documentLookup = new Map(filteredDocuments.map((doc) => [doc.id, doc]));
     let buttons = [];
-
-    const syncPlaceholderVisibility = (isHidden) => {
-      placeholder.hidden = isHidden;
-      placeholder.setAttribute('aria-hidden', isHidden ? 'true' : 'false');
-    };
 
     const updateUrl = (docId, hasEmbed) => {
       if (!window.history || typeof window.history.replaceState !== 'function') {
@@ -209,7 +242,6 @@
     const setActiveDocument = (docId, { allowUrlUpdate = true } = {}) => {
       if (!buttons.length) {
         viewer.src = 'about:blank';
-        syncPlaceholderVisibility(false);
         if (allowUrlUpdate) {
           updateUrl(null, false);
         }
@@ -226,7 +258,6 @@
 
       if (embedSrc) {
         viewer.src = embedSrc;
-        syncPlaceholderVisibility(true);
         if (allowUrlUpdate) {
           updateUrl(docId, true);
         }
@@ -234,7 +265,6 @@
       }
 
       viewer.src = 'about:blank';
-      syncPlaceholderVisibility(false);
       if (allowUrlUpdate) {
         updateUrl(null, false);
       }
@@ -247,7 +277,6 @@
         mobileList.replaceChildren();
         buttons = [];
         viewer.src = 'about:blank';
-        syncPlaceholderVisibility(false);
         updateUrl(null, false);
         return;
       }
@@ -314,7 +343,6 @@
     galleryItems,
     viewerId,
     iframeId,
-    placeholderId,
     captionId,
     emptyMessageId,
     prevButtonId,
@@ -329,7 +357,6 @@
 
     const galleryViewer = document.getElementById(viewerId);
     const galleryIframe = document.getElementById(iframeId);
-    const galleryPlaceholderEl = document.getElementById(placeholderId);
     const galleryCaptionEl = document.getElementById(captionId);
     const galleryEmptyMessage = document.getElementById(emptyMessageId);
     const galleryPrevButton = document.getElementById(prevButtonId);
@@ -428,22 +455,13 @@
         galleryCaptionEl.hidden = !captionText;
       }
 
-      if (embedSrc) {
-        if (galleryIframe) {
+      if (galleryIframe) {
+        if (embedSrc) {
           galleryIframe.src = embedSrc;
           galleryIframe.hidden = false;
-        }
-        if (galleryPlaceholderEl) {
-          galleryPlaceholderEl.hidden = true;
-        }
-      } else {
-        if (galleryIframe) {
+        } else {
           galleryIframe.src = 'about:blank';
           galleryIframe.hidden = true;
-        }
-        if (galleryPlaceholderEl) {
-          galleryPlaceholderEl.textContent = 'Provide a Google Drive file ID to preview this piece.';
-          galleryPlaceholderEl.hidden = false;
         }
       }
     };
@@ -502,7 +520,6 @@
         galleryItems: window.soundGalleryItems,
         viewerId: 'sound-gallery-viewer',
         iframeId: 'sound-gallery-iframe',
-        placeholderId: 'sound-gallery-placeholder',
         emptyMessageId: 'sound-gallery-empty',
         prevButtonId: 'sound-gallery-prev',
         nextButtonId: 'sound-gallery-next',
@@ -511,31 +528,23 @@
       return;
     }
 
-    if (body.classList.contains('papers-page')) {
+    if (body.classList.contains('document-page')) {
+      const { documentsKey, viewerId, sidebarListId, mobileListId } = body.dataset || {};
+      const documentsSource = documentsKey ? window[documentsKey] : undefined;
+
       initDocumentPage({
-        documents: window.papersDocuments,
-        viewerId: 'paper-viewer',
-        placeholderId: 'viewer-placeholder',
-        sidebarListId: 'sidebar-document-list',
-        mobileListId: 'mobile-document-list',
+        documents: Array.isArray(documentsSource) ? documentsSource : [],
+        viewerId: viewerId || 'document-viewer',
+        sidebarListId: sidebarListId || 'sidebar-document-list',
+        mobileListId: mobileListId || 'mobile-document-list',
       });
-      return;
     }
 
     if (body.classList.contains('writings-page')) {
-      initDocumentPage({
-        documents: window.casualWritingDocuments,
-        viewerId: 'writing-viewer',
-        placeholderId: 'viewer-placeholder',
-        sidebarListId: 'sidebar-document-list',
-        mobileListId: 'mobile-document-list',
-      });
-
       initGallery({
         galleryItems: window.galleryItems,
         viewerId: 'gallery-viewer',
         iframeId: 'gallery-iframe',
-        placeholderId: 'gallery-placeholder',
         captionId: 'gallery-caption',
         emptyMessageId: 'gallery-empty-message',
         prevButtonId: 'gallery-prev',
