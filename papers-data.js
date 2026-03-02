@@ -1,8 +1,19 @@
 window.papersDocuments = [
+  
+  {
+    title: "Ergativity in Mandarin (dis)appearance clauses",
+    id: "1L1nAFS9wxpufbfw37Zks83JbdM_XBaGk6XVxG4SYO50",
+    type: "gdoc",
+  },
   {
     title: "Does verb-preposition dependence modulate sluicing acceptability in English, and its implications?",
     id: "1XJ74uSLC-F_iZ-gyMMiWRoaXrV18KZ3iRG-Fbo2jhG0",
     type: "gdoc",
+  },
+  {
+    title: "Undergrad Thesis Abstract: Generative Prior in Scalar Inference via Free-Energy Principle",
+    id: "17pmkhiHEaK7VBGUrXLF09t1VtNKmO1x1",
+    type: "drive-file",
   },
   {
     title: "Review: The definite DP island in wh-questions and relative clauses",
@@ -23,7 +34,7 @@ window.casualWritingDocuments = [
     type: "gdoc",
   },
   {
-    title: "A Mezzo-sporano's Note",
+    title: "A Mezzo-sporano's Notes",
     id: "1Wz3vyFizfSffXYu4nwGygKt4vMJpiGqKcxmt1JTbh-U",
     type: "gdoc",
   },

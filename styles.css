@@ -428,7 +428,7 @@ h2 {
   font-weight: 400;
   letter-spacing: 0.03em;
   line-height: 1.55;
-  color: var(--foreground);
+  color: var(--emphasis);
   cursor: pointer;
   transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
@@ -631,16 +631,6 @@ h2 {
   line-height: 1.6;
 }
 
-.writings-page .gallery-empty-message {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  grid-column: 1;
-}
-
-.writings-page .gallery-empty-message[hidden] {
-  display: none;
-}
-
 @media (max-width: 1024px) {
   .writings-page .gallery-section {
     padding: 0 1rem;
@@ -649,8 +639,7 @@ h2 {
 
   .writings-page .gallery-viewer,
   .writings-page .gallery-description-panel,
-  .writings-page .gallery-caption,
-  .writings-page .gallery-empty-message {
+  .writings-page .gallery-caption {
     grid-column: 1;
   }
 }
