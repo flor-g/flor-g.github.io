@@ -39,6 +39,14 @@ window.papersDocuments = [
     modified: "2026-05-27",
   },
   {
+    title: "Slides: High-Absolutive Syntax in Mandarin Existential Sentences (CULC20, Cornell University, April 2026)",
+    shortTitle: "CULC20 slides: High-absolutive syntax in Mandarin",
+    id: "culc20-slides",
+    type: "pdf",
+    src: "CULC20.pdf",
+    modified: "2026-04-26",
+  },
+  {
     title: "Review: The definite DP island in wh-questions and relative clauses",
     shortTitle: "Review: The definite DP island",
     id: "1RDmKZE2VVqdxT2PUA8vwbGUwc7NNb8nB3feQqPwCqNg",
@@ -61,7 +69,7 @@ window.casualWritingDocuments = [
     type: "gdoc",
   },
   {
-    title: "A Mezzo-sporano's Notes",
+    title: "A Mezzo-soprano's Notes",
     id: "1Wz3vyFizfSffXYu4nwGygKt4vMJpiGqKcxmt1JTbh-U",
     type: "gdoc",
   },
@@ -79,19 +87,24 @@ window.casualWritingDocuments = [
 
 window.projectItems = [
   {
-    title: 'Toolkit for an experimental syntax reserach project',
-    url: 'https://github.com/flor-g/VP-dependency-in-sluices',
-    description: '',
+    title: 'Undergraduate thesis: predictive-coding model of scalar inference',
+    url: 'papers.html?doc=thesis-draft1',
+    description: 'Draft 1 of the thesis, with a link to its PyTorch notebook (main.ipynb).',
   },
   {
-    title: 'Undergraduate thesis in progress',
-    url: 'https://github.com/flor-g/Undergraduate-thesis',
-    description: '',
+    title: 'GPT-2 representations and reading times (with Natasha Luo)',
+    url: 'https://github.com/flor-g/PLIN0072_project_IAS',
+    description: 'Code and data for the incremental alternative sampling study of distance metrics and layer mixing.',
+  },
+  {
+    title: 'Toolkit for an experimental syntax research project',
+    url: 'https://github.com/flor-g/VP-dependency-in-sluices',
+    description: 'Python stimulus compiler and corpus controls for a study of verb–preposition dependence in sluicing.',
   },
   {
     title: 'Circustreams Studio Ltd.',
     url: 'https://flor-g.github.io/circustreams/',
-    description: '',
+    description: 'Website of the kintsugi studio I cofounded and teach at.',
   },
 ];
 

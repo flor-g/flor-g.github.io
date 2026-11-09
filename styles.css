@@ -834,3 +834,19 @@ body {
 .reader-content .md-fn-back {
   text-decoration: none;
 }
+
+/* Résumé section: local PDF embed, with a plain link for browsers (mostly mobile) that don't show PDFs inline. */
+.resume-embed {
+  display: block;
+  width: 100%;
+  height: min(80vh, 900px);
+  border: 1px solid var(--muted);
+  border-radius: 10px;
+}
+
+.resume-download {
+  display: inline-block;
+  margin-top: 0.75rem;
+  color: var(--emphasis);
+  font-weight: 500;
+}

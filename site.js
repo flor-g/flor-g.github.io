@@ -71,6 +71,11 @@
     if (typeKey === 'markdown') {
       return isLocalMarkdownPath(doc.src) ? `reader.html?src=${encodeURIComponent(doc.src)}` : null;
     }
+
+    // A PDF hosted on this site, shown in the browser's own PDF viewer.
+    if (typeKey === 'pdf') {
+      return typeof doc.src === 'string' && /^[\w-]+(\/[\w.-]+)*\.pdf$/.test(doc.src) ? `${doc.src}#navpanes=0` : null;
+    }
     const workspacePath = googleWorkspacePreviewPaths[typeKey];
 
     if (workspacePath) {
@@ -158,6 +163,8 @@
         link.href = href;
         if (doc.shortTitle) {
           link.title = doc.title;
+        } else if (doc.description) {
+          link.title = doc.description;
         }
 
         if (targetPage && href.startsWith(`${targetPage}?`) && hasValidDocId(doc.id)) {
