@@ -7,6 +7,44 @@
     return !String(id).startsWith('REPLACE_WITH');
   };
 
+  // Only Markdown files hosted on this site, e.g. "thesis/draft1.md".
+  const isLocalMarkdownPath = (path) =>
+    typeof path === 'string' && /^[\w-]+(\/[\w.-]+)*\.md$/.test(path) && !path.includes('..');
+
+  // Discourage copying text from the site. This is not real protection: the
+  // files are public, and embedded Google Docs (other origins) are unaffected.
+  const disableCopying = () => {
+    ['copy', 'cut', 'dragstart', 'selectstart'].forEach((type) => {
+      document.addEventListener(type, (event) => event.preventDefault());
+    });
+  };
+
+  disableCopying();
+
+  // `modified` is an ISO date ("2026-10-01"). Newest first; undated entries keep
+  // their original order after the dated ones.
+  const sortByModified = (documents) =>
+    documents
+      .map((doc, index) => ({ doc, index }))
+      .sort((a, b) => {
+        const da = a.doc.modified || '';
+        const db = b.doc.modified || '';
+        if (da !== db) {
+          if (!da) return 1;
+          if (!db) return -1;
+          return da < db ? 1 : -1;
+        }
+        return a.index - b.index;
+      })
+      .map(({ doc }) => doc);
+
+  const formatDate = (iso) => {
+    const date = new Date(`${iso}T00:00:00Z`);
+    return Number.isNaN(date.getTime())
+      ? iso
+      : date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  };
+
   const googleWorkspacePreviewPaths = {
     gdoc: 'document',
     gsheet: 'spreadsheets',
@@ -29,6 +67,10 @@
     }
 
     const typeKey = typeof doc.type === 'string' ? doc.type.toLowerCase() : '';
+
+    if (typeKey === 'markdown') {
+      return isLocalMarkdownPath(doc.src) ? `reader.html?src=${encodeURIComponent(doc.src)}` : null;
+    }
     const workspacePath = googleWorkspacePreviewPaths[typeKey];
 
     if (workspacePath) {
@@ -79,7 +121,7 @@
 
   const initHomePage = () => {
     const normalizeDocuments = (value) =>
-      Array.isArray(value) ? value.filter((doc) => doc && doc.title) : [];
+      Array.isArray(value) ? sortByModified(value.filter((doc) => doc && doc.title)) : [];
 
     const populateSlots = (slotsElement, documents, options = {}) => {
       const { targetPage = null, iconRenderer = null } = options;
@@ -111,9 +153,12 @@
 
         const label = document.createElement('span');
         label.className = 'slot-link-label';
-        label.textContent = doc.title;
+        label.textContent = doc.shortTitle || doc.title;
 
         link.href = href;
+        if (doc.shortTitle) {
+          link.title = doc.title;
+        }
 
         if (targetPage && href.startsWith(`${targetPage}?`) && hasValidDocId(doc.id)) {
           link.setAttribute('data-doc-id', doc.id);
@@ -194,7 +239,10 @@
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'document-button';
-    button.textContent = doc.title;
+    button.textContent = doc.shortTitle || doc.title;
+    if (doc.shortTitle) {
+      button.title = doc.title;
+    }
     if (doc.id !== undefined) {
       button.dataset.docId = doc.id;
     }
@@ -210,12 +258,21 @@
     urlParam = 'doc',
   }) => {
     const filteredDocuments = Array.isArray(documents)
-      ? documents.filter((doc) => doc && doc.title && doc.id)
+      ? sortByModified(documents.filter((doc) => doc && doc.title && doc.id))
       : [];
 
     const sidebarList = document.getElementById(sidebarListId);
     const mobileList = document.getElementById(mobileListId);
     const viewer = document.getElementById(viewerId);
+    const modifiedLabel = document.getElementById('document-modified');
+
+    const showModified = (doc) => {
+      if (!modifiedLabel) {
+        return;
+      }
+      modifiedLabel.textContent = doc?.modified ? `Last modified ${formatDate(doc.modified)}` : '';
+      modifiedLabel.hidden = !doc?.modified;
+    };
 
     if (!sidebarList || !mobileList || !viewer) {
       return;
@@ -255,6 +312,8 @@
         const isMatch = btn.dataset.docId === docId && !!embedSrc;
         btn.setAttribute('aria-current', isMatch ? 'true' : 'false');
       });
+
+      showModified(embedSrc ? doc : null);
 
       if (embedSrc) {
         viewer.src = embedSrc;
@@ -506,10 +565,83 @@
     renderGallery();
   };
 
+  const initReaderPage = async () => {
+    const content = document.getElementById('reader-content');
+    const tocNav = document.getElementById('reader-toc');
+    const tocList = document.getElementById('reader-toc-list');
+
+    if (!content || typeof window.renderMarkdown !== 'function') {
+      return;
+    }
+
+    const showStatus = (message) => {
+      const status = document.createElement('p');
+      status.className = 'reader-status';
+      status.textContent = message;
+      content.replaceChildren(status);
+    };
+
+    const src = new URLSearchParams(window.location.search).get('src');
+    if (!isLocalMarkdownPath(src)) {
+      showStatus('No document selected.');
+      return;
+    }
+
+    let markdown;
+    try {
+      const response = await fetch(src);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      markdown = await response.text();
+    } catch (error) {
+      showStatus('This document could not be loaded.');
+      return;
+    }
+
+    const renderMath = (tex, displayMode) => {
+      if (!window.katex) {
+        const code = document.createElement('code');
+        code.textContent = tex;
+        return code.outerHTML;
+      }
+      return window.katex.renderToString(tex, { displayMode, throwOnError: false });
+    };
+
+    const { html, headings } = window.renderMarkdown(markdown, { renderMath });
+    content.innerHTML = html;
+
+    const title = content.querySelector('h1');
+    if (title) {
+      document.title = title.textContent;
+    }
+
+    // Contents: top-level and second-level headings, skipping the title itself.
+    const tocEntries = headings.filter((heading, index) => index > 0 && heading.level <= 2);
+    if (tocNav && tocList && tocEntries.length) {
+      tocList.innerHTML = tocEntries
+        .map(
+          (heading) =>
+            `<li class="reader-toc-level-${heading.level}"><a href="#${heading.id}">${heading.html}</a></li>`
+        )
+        .join('');
+      tocNav.hidden = false;
+    }
+
+    if (window.location.hash) {
+      document.getElementById(decodeURIComponent(window.location.hash.slice(1)))?.scrollIntoView();
+    }
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
 
     if (!body) {
+      return;
+    }
+
+    if (body.classList.contains('reader-page')) {
+      initReaderPage();
       return;
     }
 

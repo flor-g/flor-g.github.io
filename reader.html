@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reader</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <!-- Renders a Markdown file from this site: reader.html?src=thesis/draft1.md -->
+  <body class="reader-page">
+    <main class="reader">
+      <nav class="reader-toc" id="reader-toc" aria-label="Contents" hidden>
+        <details>
+          <summary>Contents</summary>
+          <ol id="reader-toc-list"></ol>
+        </details>
+      </nav>
+      <article class="reader-content" id="reader-content">
+        <p class="reader-status">Loading…</p>
+      </article>
+    </main>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="markdown.js"></script>
+    <script src="site.js"></script>
+  </body>
+</html>

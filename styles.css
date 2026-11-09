@@ -29,6 +29,17 @@ body {
   min-height: 100vh;
 }
 
+/* Static still of a Turing (Gray–Scott) pattern at an early, flower-like stage.
+   Made once by tools/turing-snapshot.mjs, so it costs nothing at runtime. */
+.home-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("turing-flower.png") center / min(512px, 90vmin) no-repeat;
+}
+
 button {
   color: var(--emphasis);
 }
@@ -279,7 +290,7 @@ h2 {
   justify-content: space-between;
   gap: 0.75rem;
   border: 1px solid var(--muted);
-  padding: 0.85rem 1rem;
+  padding: 0.65rem 1rem;
   text-decoration: none;
   color: inherit;
   font-weight: 500;
@@ -379,6 +390,14 @@ h2 {
   border: 0;
 }
 
+.document-page .viewer-modified {
+  padding: 0.6rem 1.25rem;
+  border-bottom: 1px solid var(--muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  opacity: 0.8;
+}
+
 .document-page .sidebar {
   border: 1px solid var(--muted);
   border-radius: 20px;
@@ -422,12 +441,12 @@ h2 {
   background: transparent;
   border: 1px solid var(--muted);
   border-radius: 12px;
-  padding: 1rem 1.25rem;
+  padding: 0.65rem 1rem;
   font: inherit;
   font-size: 0.9rem;
   font-weight: 400;
   letter-spacing: 0.03em;
-  line-height: 1.55;
+  line-height: 1.4;
   color: var(--emphasis);
   cursor: pointer;
   transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
@@ -658,4 +677,160 @@ h2 {
     width: 40px;
     height: 40px;
   }
+}
+
+/* Disable text selection site-wide (copy events are also blocked in site.js). */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Markdown reader (reader.html), shown inside the Papers viewer */
+.reader-page {
+  min-height: 0;
+}
+
+.reader {
+  width: min(46rem, 100%);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.reader-status {
+  color: var(--foreground);
+  opacity: 0.7;
+}
+
+.reader-toc {
+  margin-bottom: 2rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--muted);
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+.reader-toc summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--emphasis);
+}
+
+.reader-toc ol {
+  list-style: none;
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.reader-toc .reader-toc-level-2 {
+  padding-left: 1.25rem;
+}
+
+.reader-toc a {
+  text-decoration: none;
+}
+
+.reader-toc a:hover {
+  text-decoration: underline;
+}
+
+.reader-content {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  overflow-wrap: break-word;
+}
+
+.reader-content > * + * {
+  margin-top: 1rem;
+}
+
+.reader-content h1,
+.reader-content h2,
+.reader-content h3,
+.reader-content h4 {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.3;
+  margin-top: 2.25rem;
+  scroll-margin-top: 1rem;
+}
+
+.reader-content h1 {
+  font-size: 1.6rem;
+}
+
+.reader-content h1:first-child {
+  margin-top: 0;
+}
+
+.reader-content h2 {
+  font-size: 1.25rem;
+}
+
+.reader-content h3 {
+  font-size: 1.05rem;
+}
+
+.reader-content hr {
+  border: 0;
+  border-top: 1px solid var(--muted);
+  margin: 2rem 0;
+}
+
+.reader-content a {
+  color: var(--emphasis);
+}
+
+.reader-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+}
+
+.reader-content .md-math-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.reader-content .md-table {
+  overflow-x: auto;
+}
+
+.reader-content table {
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 0 auto;
+}
+
+.reader-content th,
+.reader-content td {
+  padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid var(--muted);
+}
+
+.reader-content .md-fn-ref {
+  line-height: 0;
+}
+
+.reader-content .md-fn-ref a {
+  text-decoration: none;
+  padding: 0 0.1em;
+}
+
+.reader-content .md-footnotes {
+  font-size: 0.9rem;
+}
+
+.reader-content .md-footnotes ol {
+  padding-left: 1.5rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.reader-content .md-footnotes li {
+  scroll-margin-top: 1rem;
+}
+
+.reader-content .md-fn-back {
+  text-decoration: none;
 }
