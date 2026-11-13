@@ -92,6 +92,11 @@ window.projectItems = [
     description: 'Draft 1 of the thesis, with a link to its PyTorch notebook (main.ipynb).',
   },
   {
+    title: 'coursework_sync: Canvas, Ed, course sites and Gmail into Notion',
+    url: 'https://github.com/flor-g/coursework_sync',
+    description: 'Python on GitHub Actions plus an Apps Script: gathers coursework from Canvas, course websites, Ed Discussion and Gmail into one Notion workspace and Google Calendar, with Claude summarizing emails and turning slides into lecture notes.',
+  },
+  {
     title: 'GPT-2 representations and reading times (with Natasha Luo)',
     url: 'https://github.com/flor-g/PLIN0072_project_IAS',
     description: 'Code and data for the incremental alternative sampling study of distance metrics and layer mixing.',
