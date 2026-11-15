@@ -64,6 +64,20 @@ window.papersDocuments = [
 
 window.casualWritingDocuments = [
   {
+    title: "On the Nature of Disability",
+    id: "autonomy",
+    type: "markdown",
+    src: "thoughts/autonomy.md",
+    modified: "2026-11-14",
+  },
+  {
+    title: "To Give the Illusion of Free Will",
+    id: "free-will",
+    type: "markdown",
+    src: "thoughts/free-will.md",
+    modified: "2026-11-14",
+  },
+  {
     title: "Trees 树",
     id: "1QWREv_lyamYs3qNbkwL1WUkbdsF7mztK8QatJNmw-HI",
     type: "gdoc",

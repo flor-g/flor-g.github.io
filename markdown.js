@@ -1,10 +1,10 @@
 // A small Markdown renderer for the site's long-form documents (e.g. thesis/draft1.md).
 //
-// Supports: headings (#–######), paragraphs, horizontal rules, bulleted lists, pipe tables with
+// Supports: headings (#–######), paragraphs, horizontal rules, bulleted and numbered lists, pipe tables with
 // alignment, footnotes ([^id] and [^id]: text), **bold**, *italic*, `code`,
 // [links](url), bare https:// links, backslash escapes, and LaTeX math in
 // \( inline \) and \[ display \] form (rendered by the renderMath callback).
-// Numbered lists, block quotes, code fences and raw HTML are not supported; raw HTML is escaped.
+// Block quotes, code fences and raw HTML are not supported; raw HTML is escaped.
 (function (global) {
   const escapeHtml = (value) =>
     String(value)
@@ -104,25 +104,28 @@
 
     const isTableSeparator = (line) => /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$/.test(line);
 
-    // Bulleted lists ("- ", "* " or "+ "), nested by indentation.
-    const LIST_ITEM = /^(\s*)[-*+]\s+(.*)$/;
+    // Bulleted ("- ", "* " or "+ ") and numbered ("1. ") lists, nested by indentation.
+    // Each level's list type comes from its first item.
+    const LIST_ITEM = /^(\s*)([-*+]|\d+\.)\s+(.*)$/;
     const renderList = (items) => {
       let html = '';
       const stack = [];
       items.forEach((item) => {
-        if (!stack.length || item.indent > stack[stack.length - 1]) {
-          html += '<ul><li>';
-          stack.push(item.indent);
+        if (!stack.length || item.indent > stack[stack.length - 1].indent) {
+          const tag = item.ordered ? 'ol' : 'ul';
+          html += `<${tag}><li>`;
+          stack.push({ indent: item.indent, tag });
         } else {
-          while (stack.length > 1 && item.indent < stack[stack.length - 1]) {
-            html += '</li></ul>';
-            stack.pop();
+          while (stack.length > 1 && item.indent < stack[stack.length - 1].indent) {
+            html += `</li></${stack.pop().tag}>`;
           }
           html += '</li><li>';
         }
         html += inline(item.text);
       });
-      html += '</li></ul>'.repeat(stack.length);
+      while (stack.length) {
+        html += `</li></${stack.pop().tag}>`;
+      }
       return html;
     };
 
@@ -199,7 +202,11 @@
         while (i < lines.length && (LIST_ITEM.test(lines[i]) || (lines[i].trim() && items.length && /^\s{2,}\S/.test(lines[i])))) {
           const match = LIST_ITEM.exec(lines[i]);
           if (match) {
-            items.push({ indent: match[1].replace(/\t/g, '    ').length, text: match[2] });
+            items.push({
+              indent: match[1].replace(/\t/g, '    ').length,
+              ordered: /\d/.test(match[2]),
+              text: match[3],
+            });
           } else {
             items[items.length - 1].text += ` ${lines[i].trim()}`;
           }

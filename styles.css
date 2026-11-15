@@ -746,6 +746,10 @@ body {
   margin-top: 1rem;
 }
 
+.reader-content > ol {
+  padding-left: 2rem;
+}
+
 .reader-content h1,
 .reader-content h2,
 .reader-content h3,
