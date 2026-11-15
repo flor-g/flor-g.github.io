@@ -64,6 +64,13 @@ window.papersDocuments = [
 
 window.casualWritingDocuments = [
   {
+    title: "The Need for a Scale",
+    id: "language-reality",
+    type: "markdown",
+    src: "thoughts/language-reality.md",
+    modified: "2026-11-15",
+  },
+  {
     title: "On the Nature of Disability",
     id: "autonomy",
     type: "markdown",
