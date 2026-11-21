@@ -77,21 +77,26 @@ h2 {
 
 
 
+/* ASCII tokens, shared by every page ------------------------------------
+   Long runs of characters, clipped to fit, on one line grid (--line). */
+
+:root {
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --fs: 15px;
+  --line: 24px;
+  --bars: "|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A";
+  --colons: ":\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A";
+  --dashes: "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+  --dots: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .";
+}
+
 /* Home page: an ASCII file tree ------------------------------------------
    Everything in .tree sits on one line grid (--line). The vertical rules are
    long strings of characters clipped to their box, so every height inside the
    tree is kept to a whole number of lines. */
 
 .home-page {
-  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  --fs: 15px;
-  --line: 24px;
   --column: 680px;
-  /* Long runs of characters, clipped to fit. */
-  --bars: "|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A";
-  --colons: ":\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A:\A";
-  --dashes: "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-  --dots: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .";
   font-family: var(--mono);
   display: flex;
   flex-direction: column;
@@ -440,357 +445,338 @@ h2 {
 }
 
 @media (max-width: 600px) {
-  .home-page {
+  :root {
     --fs: 13px;
     --line: 21px;
+  }
+
+  .home-page {
     padding: 2.5rem 1rem 3rem;
   }
 }
 
-/* Shared document viewer pages ---------------------------------------- */
+/* Subpages (Papers & Essays, Thoughts) ----------------------------------
+   Left: the open document as a tree ending in a boxed viewer.
+   Right: the folder, "../Name", listing its documents. */
 
-.document-page .page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.document-page {
+  --doc-cols: minmax(0, 1fr) 34ch;
+  font-family: var(--mono);
+  font-size: var(--fs);
+  line-height: var(--line);
+  padding: 3rem 1.5rem 4rem;
 }
 
-.document-page .top-bar {
-  display: none;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--muted);
-  align-items: center;
-  gap: 1rem;
+.document-page p {
+  line-height: var(--line);
 }
 
-.document-page .top-bar h1 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+.document-page h1,
+.document-page h2 {
+  padding: 0;
+  font: inherit;
 }
 
-.document-page .back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--accent);
+.document-page iframe {
+  border-radius: 0;
 }
 
-.document-page main {
-  flex: 1;
+.document-page :focus-visible {
+  outline: 1px dashed var(--emphasis);
+  outline-offset: 2px;
+}
+
+/* Zero specificity, so component rules (e.g. .gallery-nav colour) win. */
+:where(.document-page) button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  line-height: var(--line);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.doc-ink,
+.document-page .branch,
+.folder-list::before,
+.contents-list::before {
+  color: var(--tree-ink);
+}
+
+[aria-expanded="true"] > .caret::before {
+  content: "v";
+}
+
+.doc-layout {
   width: min(1200px, 100%);
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 3rem;
   display: grid;
-  gap: 2rem;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: var(--doc-cols);
+  column-gap: 6ch;
+  row-gap: calc(2 * var(--line));
+  align-items: start;
 }
 
-.document-page .viewer {
-  position: relative;
-  border: 1px solid var(--muted);
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: clamp(440px, 70vh, 820px);
+.doc-main {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
 }
 
-.document-page .viewer iframe {
-  flex: 1;
-  width: 100%;
-  border: 0;
-}
+/* Folder ---------------------------------------------------------------- */
 
-.document-page .viewer-modified {
-  padding: 0.6rem 1.25rem;
-  border-bottom: 1px solid var(--muted);
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-  opacity: 0.8;
-}
-
-.document-page .sidebar {
-  border: 1px solid var(--muted);
-  border-radius: 20px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.folder {
+  grid-column: 2;
+  grid-row: 1;
   position: sticky;
   top: 2rem;
-  align-self: start;
-  height: fit-content;
-  background: color-mix(in srgb, var(--background) 88%, transparent);
+  min-width: 0;
 }
 
-.document-page .sidebar-header {
+.folder-path {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.document-page .sidebar h1 {
-  font-size: 1.4rem;
+  align-items: baseline;
   font-weight: 600;
-  letter-spacing: 0.04em;
 }
 
-.document-page .document-list,
-.document-page .mobile-document-list {
+.parent-link {
+  color: var(--emphasis);
+  text-decoration: none;
+}
+
+.parent-link:hover,
+.parent-link:focus-visible {
+  text-decoration: underline;
+}
+
+.folder-name {
+  min-width: 0;
+}
+
+.folder-toggle {
+  display: none;
+  flex: none;
+  margin-left: 1ch;
+}
+
+.folder-list,
+.contents-list,
+.toc-sub {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
 }
 
-.document-page .document-button {
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  border: 1px solid var(--muted);
-  border-radius: 12px;
-  padding: 0.65rem 1rem;
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  line-height: 1.4;
-  color: var(--emphasis);
-  cursor: pointer;
-  transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
-}
-
-.document-page .document-button:hover,
-.document-page .document-button:focus-visible {
-  outline: none;
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-}
-
-.document-page .document-button[aria-current='true'] {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-}
-
-.document-page .mobile-section {
-  display: none;
-  border-top: 1px solid var(--muted);
-  padding: 2rem 1.5rem 3rem;
-  width: min(720px, 100%);
-  margin: 0 auto;
-}
-
-.document-page .mobile-section h2 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 1024px) {
-  .document-page main {
-    grid-template-columns: minmax(0, 1fr);
-    padding: 1.5rem 1rem 2rem;
-  }
-
-  .document-page .sidebar {
-    display: none;
-  }
-
-  .document-page .top-bar {
-    display: flex;
-  }
-
-  .document-page .mobile-section {
-    display: block;
-  }
-}
-
-@media (max-width: 600px) {
-  .document-page .top-bar {
-    padding: 0.85rem 1rem;
-  }
-
-  .document-page main {
-    padding: 1.25rem 1rem 2rem;
-  }
-
-  .document-page .mobile-section {
-    padding: 0 1rem 2rem;
-  }
-}
-
-/* Writings page -------------------------------------------------------- */
-
-.writings-page .gallery-section {
-  width: min(1200px, 100%);
-  margin: 1.5rem auto 3rem;
-  padding: 0 1.5rem;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  column-gap: 2rem;
-  row-gap: 1.5rem;
-  align-items: start;
+.folder-list,
+.contents-list {
   position: relative;
-  z-index: 0;
+  padding-top: var(--line);
 }
 
-.writings-page .gallery-section header h2 {
-  font-size: 1.4rem;
+/* The bar linking a heading to its first child. */
+.folder-list::before,
+.contents-list::before {
+  content: "|";
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.folder-list li {
+  position: relative;
+  padding-bottom: var(--line);
+}
+
+.folder-list li:last-child {
+  padding-bottom: 0;
+}
+
+.folder-list li:not(:last-child)::before,
+.contents-body::before {
+  position: absolute;
+  bottom: 0;
+  width: 1ch;
+  overflow: hidden;
+  white-space: pre;
+  line-height: var(--line);
+  content: var(--bars);
+  color: var(--tree-ink);
+  pointer-events: none;
+}
+
+.folder-list li:not(:last-child)::before {
+  top: var(--line);
+  left: 0;
+}
+
+.folder-item,
+.toc-link {
+  display: grid;
+  grid-template-columns: 1ch minmax(0, 1fr);
+  width: 100%;
+}
+
+.folder-item .branch::before,
+.toc-link .branch::before {
+  content: "\\";
+}
+
+.folder-item:hover .folder-label,
+.folder-item:focus-visible .folder-label,
+.toc-link:hover .toc-label,
+.toc-link:focus-visible .toc-label {
+  color: var(--emphasis);
+}
+
+.folder-item[aria-current="true"] .folder-label {
+  color: var(--emphasis);
   font-weight: 600;
-  letter-spacing: 0.05em;
 }
 
-.writings-page .gallery-viewer {
-  border: 1px solid var(--muted);
-  border-radius: 20px;
-  background: color-mix(in srgb, var(--background) 88%, transparent);
+.folder-item[aria-current="true"] .branch::before {
+  content: ">";
+  color: var(--emphasis);
+}
+
+/* Contents -------------------------------------------------------------- */
+
+.doc-contents[hidden],
+.contents-list[hidden],
+.toc-sub[hidden] {
+  display: none;
+}
+
+.contents-row {
   display: flex;
-  align-items: stretch;
-  justify-content: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-  grid-column: 1;
+  font-weight: 600;
 }
 
-.writings-page .gallery-viewer[hidden] {
+.contents-row .doc-ink {
+  font-weight: 400;
+}
+
+.caret {
+  color: var(--emphasis);
+}
+
+.contents-toggle .caret,
+.toc-caret {
+  margin-left: 1ch;
+}
+
+.contents-toggle:hover,
+.contents-toggle:focus-visible {
+  color: var(--emphasis);
+}
+
+/* The trunk keeps running past Contents down to the viewer. */
+.contents-body {
+  position: relative;
+  padding-left: 3ch;
+}
+
+.contents-body::before {
+  top: 0;
+  left: 0;
+}
+
+.toc-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.toc-link {
+  width: auto;
+  min-width: 0;
+}
+
+.toc-caret {
+  flex: none;
+  color: var(--emphasis);
+}
+
+.toc-sub {
+  padding-left: 3ch;
+}
+
+/* Viewer ---------------------------------------------------------------- */
+
+.document-viewer {
+  display: block;
+  width: 100%;
+  height: clamp(440px, 75vh, 900px);
+  height: round(down, clamp(440px, 75vh, 900px), var(--line));
+  border: 0;
+}
+
+/* Thoughts gallery ------------------------------------------------------ */
+
+/* Stays in the left column, clear of the sticky folder. */
+.gallery-section {
+  grid-column: 1;
+  min-width: 0;
+}
+
+.gallery-description-panel {
+  margin-top: var(--line);
+}
+
+.gallery-viewer[hidden],
+.gallery-description-panel[hidden] {
   display: none;
 }
 
 .writings-page .gallery-frame {
-  position: relative;
-  flex: 1 1 auto;
-  max-width: 820px;
-  padding-bottom: 62%;
-  border-radius: 16px;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--muted) 40%, transparent);
+  height: calc(100cqi * 0.62);
+  height: round(up, calc(100cqi * 0.62), var(--line));
 }
 
-.writings-page .gallery-embed {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-.writings-page .gallery-embed[hidden] {
-  display: none;
-}
-
-.writings-page .gallery-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: stretch;
-  justify-content: center;
-}
-
-.writings-page .gallery-nav {
-  flex: 0 0 auto;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--muted);
-  background: color-mix(in srgb, var(--background) 92%, transparent);
-  color: var(--emphasis);
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.3s ease, background 0.3s ease;
-}
-
-.writings-page .gallery-nav:hover,
-.writings-page .gallery-nav:focus-visible {
-  outline: none;
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-}
-
-.writings-page .gallery-nav:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.writings-page .gallery-caption {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  letter-spacing: 0.02em;
-  grid-column: 1;
-}
-
-.writings-page .gallery-caption[hidden] {
-  display: none;
-}
-
-.writings-page .gallery-description-panel {
-  border: 1px solid var(--muted);
-  border-radius: 20px;
-  padding: 1.5rem;
-  background: color-mix(in srgb, var(--background) 85%, transparent);
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-.writings-page .gallery-description-panel[hidden] {
-  display: none;
-}
-
-.writings-page .gallery-description-title {
-  font-size: 1.1rem;
+.gallery-description-title {
   font-weight: 600;
-  letter-spacing: 0.04em;
 }
 
-.writings-page .gallery-transcription {
-  font-size: 1rem;
+.gallery-description-title::before {
+  content: "# ";
+  color: var(--tree-ink);
   font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
 }
 
-.writings-page .gallery-description {
-  font-size: 0.95rem;
-  line-height: 1.6;
+.gallery-description-panel .colon-block {
+  margin-top: var(--line);
 }
 
 @media (max-width: 1024px) {
-  .writings-page .gallery-section {
-    padding: 0 1rem;
-    grid-template-columns: 1fr;
+  .document-page {
+    --doc-cols: minmax(0, 1fr);
   }
 
-  .writings-page .gallery-viewer,
-  .writings-page .gallery-description-panel,
-  .writings-page .gallery-caption {
+  .folder {
     grid-column: 1;
+    position: static;
+  }
+
+  .doc-main {
+    grid-row: 2;
+  }
+
+  .gallery-section {
+    grid-row: 3;
+  }
+
+  .folder-toggle {
+    display: inline-block;
+  }
+
+  .folder[data-open="false"] .folder-list {
+    display: none;
   }
 }
 
-@media (max-width: 640px) {
-  .writings-page .gallery-viewer {
-    gap: 0.75rem;
-    padding: 0.75rem;
-  }
-
-  .writings-page .gallery-frame {
-    padding-bottom: 75%;
-  }
-
-  .writings-page .gallery-nav {
-    width: 40px;
-    height: 40px;
+@media (max-width: 600px) {
+  .document-page {
+    padding: 2.5rem 1rem 3rem;
   }
 }
 

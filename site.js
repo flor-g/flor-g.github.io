@@ -38,11 +38,10 @@
       })
       .map(({ doc }) => doc);
 
-  const formatDate = (iso) => {
-    const date = new Date(`${iso}T00:00:00Z`);
-    return Number.isNaN(date.getTime())
-      ? iso
-      : date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  // "2026-11-09" -> "11/09/2026"; undated documents show blanks.
+  const formatShortDate = (iso) => {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    return match ? `${match[2]}/${match[3]}/${match[1]}` : '--/--/----';
   };
 
   const googleWorkspacePreviewPaths = {
@@ -209,11 +208,11 @@
     });
   };
 
-  const buildDocumentButton = (doc) => {
+  const buildFolderItem = (doc) => {
+    const item = document.createElement('li');
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = 'document-button';
-    button.textContent = doc.shortTitle || doc.title;
+    button.className = 'folder-item';
     if (doc.shortTitle) {
       button.title = doc.title;
     }
@@ -221,39 +220,181 @@
       button.dataset.docId = doc.id;
     }
     button.setAttribute('aria-current', 'false');
-    return button;
+
+    const branch = document.createElement('span');
+    branch.className = 'branch';
+    branch.setAttribute('aria-hidden', 'true');
+
+    const label = document.createElement('span');
+    label.className = 'folder-label';
+    label.textContent = doc.shortTitle || doc.title;
+
+    button.append(branch, label);
+    item.appendChild(button);
+    return { item, button };
   };
 
-  const initDocumentPage = ({
-    documents,
-    viewerId,
-    sidebarListId,
-    mobileListId,
-    urlParam = 'doc',
-  }) => {
+  // Opens or closes a list from its caret button.
+  const setExpanded = (button, list, expanded) => {
+    button.setAttribute('aria-expanded', String(expanded));
+    list.hidden = !expanded;
+  };
+
+  const initDocumentPage = ({ documents, viewerId, listId, urlParam = 'doc' }) => {
     const filteredDocuments = Array.isArray(documents)
       ? sortByModified(documents.filter((doc) => doc && doc.title && doc.id))
       : [];
 
-    const sidebarList = document.getElementById(sidebarListId);
-    const mobileList = document.getElementById(mobileListId);
-    const viewer = document.getElementById(viewerId);
+    const list = document.getElementById(listId);
+    let viewer = document.getElementById(viewerId);
     const modifiedLabel = document.getElementById('document-modified');
+    const folder = list?.closest('.folder');
+    const folderToggle = folder?.querySelector('.folder-toggle');
+    const contents = document.getElementById('document-contents');
+    const contentsList = document.getElementById('contents-list');
+    const contentsToggle = contents?.querySelector('.contents-toggle');
 
-    const showModified = (doc) => {
-      if (!modifiedLabel) {
-        return;
-      }
-      modifiedLabel.textContent = doc?.modified ? `Last modified ${formatDate(doc.modified)}` : '';
-      modifiedLabel.hidden = !doc?.modified;
-    };
-
-    if (!sidebarList || !mobileList || !viewer) {
+    if (!list || !viewer) {
       return;
     }
 
     const documentLookup = new Map(filteredDocuments.map((doc) => [doc.id, doc]));
     let buttons = [];
+    let activeDoc = null;
+
+    // On narrow screens the folder list folds away under "../Name >".
+    const setFolderOpen = (open) => {
+      if (!folder) {
+        return;
+      }
+      folder.dataset.open = String(open);
+      folderToggle?.setAttribute('aria-expanded', String(open));
+    };
+
+    folderToggle?.addEventListener('click', () => {
+      setFolderOpen(folder.dataset.open !== 'true');
+    });
+
+    const showModified = (doc) => {
+      if (modifiedLabel) {
+        modifiedLabel.textContent = `#Last updated: ${formatShortDate(doc?.modified)}`;
+      }
+    };
+
+    const clearContents = () => {
+      if (!contents || !contentsList) {
+        return;
+      }
+      contents.hidden = true;
+      contentsList.replaceChildren();
+      if (contentsToggle) {
+        setExpanded(contentsToggle, contentsList, false);
+      }
+    };
+
+    const scrollViewerTo = (id) => {
+      viewer.contentWindow?.postMessage({ type: 'reader-scroll', id }, window.location.origin);
+    };
+
+    const buildContentsEntry = (heading) => {
+      const item = document.createElement('li');
+      const row = document.createElement('div');
+      row.className = 'toc-row';
+
+      const link = document.createElement('button');
+      link.type = 'button';
+      link.className = 'toc-link';
+      const branch = document.createElement('span');
+      branch.className = 'branch';
+      branch.setAttribute('aria-hidden', 'true');
+      const label = document.createElement('span');
+      label.className = 'toc-label';
+      label.textContent = heading.text;
+      link.append(branch, label);
+      link.addEventListener('click', () => scrollViewerTo(heading.id));
+
+      row.appendChild(link);
+      item.appendChild(row);
+      return { item, row };
+    };
+
+    // Two levels: the document's top sections, each folding open to its subsections.
+    const renderContents = (headings) => {
+      clearContents();
+      if (!contents || !contentsList) {
+        return;
+      }
+
+      const entries = Array.isArray(headings)
+        ? headings.filter(
+            (h) => h && typeof h.id === 'string' && typeof h.text === 'string' && h.text && Number.isInteger(h.level)
+          )
+        : [];
+      if (!entries.length) {
+        return;
+      }
+
+      const base = Math.min(...entries.map((h) => h.level));
+      const sections = [];
+      entries.forEach((heading) => {
+        if (heading.level === base) {
+          sections.push({ heading, subsections: [] });
+        } else if (heading.level === base + 1 && sections.length) {
+          sections[sections.length - 1].subsections.push(heading);
+        }
+      });
+
+      const fragment = document.createDocumentFragment();
+      sections.forEach(({ heading, subsections }) => {
+        const { item, row } = buildContentsEntry(heading);
+
+        if (subsections.length) {
+          const sub = document.createElement('ul');
+          sub.className = 'toc-sub';
+          sub.hidden = true;
+          subsections.forEach((subheading) => sub.appendChild(buildContentsEntry(subheading).item));
+
+          const caret = document.createElement('button');
+          caret.type = 'button';
+          caret.className = 'toc-caret';
+          caret.setAttribute('aria-label', `Subsections of ${heading.text}`);
+          caret.setAttribute('aria-expanded', 'false');
+          const caretMark = document.createElement('span');
+          caretMark.className = 'caret';
+          caretMark.setAttribute('aria-hidden', 'true');
+          caret.appendChild(caretMark);
+          caret.addEventListener('click', () => {
+            setExpanded(caret, sub, caret.getAttribute('aria-expanded') !== 'true');
+          });
+
+          row.appendChild(caret);
+          item.appendChild(sub);
+        }
+
+        fragment.appendChild(item);
+      });
+
+      contentsList.replaceChildren(fragment);
+      contents.hidden = false;
+    };
+
+    contentsToggle?.addEventListener('click', () => {
+      setExpanded(contentsToggle, contentsList, contentsToggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // reader.html reports its headings once a Markdown document has rendered.
+    window.addEventListener('message', (event) => {
+      if (
+        event.source !== viewer.contentWindow ||
+        event.origin !== window.location.origin ||
+        event.data?.type !== 'reader-headings' ||
+        !activeDoc ||
+        event.data.src !== activeDoc.src
+      ) {
+        return;
+      }
+      renderContents(event.data.headings);
+    });
 
     const updateUrl = (docId, hasEmbed) => {
       if (!window.history || typeof window.history.replaceState !== 'function') {
@@ -271,13 +412,7 @@
     };
 
     const setActiveDocument = (docId, { allowUrlUpdate = true } = {}) => {
-      if (!buttons.length) {
-        viewer.src = 'about:blank';
-        if (allowUrlUpdate) {
-          updateUrl(null, false);
-        }
-        return false;
-      }
+      clearContents();
 
       const doc = documentLookup.get(docId);
       const embedSrc = doc ? getDocumentEmbedSrc(doc) : null;
@@ -287,74 +422,44 @@
         btn.setAttribute('aria-current', isMatch ? 'true' : 'false');
       });
 
-      showModified(embedSrc ? doc : null);
+      activeDoc = embedSrc ? doc : null;
+      showModified(activeDoc);
+      // A fresh frame per document. Changing src on a frame showing a Google
+      // Doc does not always navigate it (the old doc stays, blank), and each
+      // src change would also add an entry to the browser's back history.
+      const frame = viewer.cloneNode(false);
+      frame.src = embedSrc || 'about:blank';
+      viewer.replaceWith(frame);
+      viewer = frame;
 
-      if (embedSrc) {
-        viewer.src = embedSrc;
-        if (allowUrlUpdate) {
-          updateUrl(docId, true);
-        }
-        return true;
-      }
-
-      viewer.src = 'about:blank';
       if (allowUrlUpdate) {
-        updateUrl(null, false);
+        updateUrl(embedSrc ? docId : null, !!embedSrc);
       }
-      return false;
+      return !!embedSrc;
     };
 
-    const renderLists = () => {
-      if (!filteredDocuments.length) {
-        sidebarList.replaceChildren();
-        mobileList.replaceChildren();
-        buttons = [];
-        viewer.src = 'about:blank';
-        updateUrl(null, false);
-        return;
-      }
+    const entries = filteredDocuments.map(buildFolderItem);
+    list.replaceChildren(...entries.map((entry) => entry.item));
+    buttons = entries.map((entry) => entry.button);
 
-      const createListItem = (doc) => {
-        const li = document.createElement('li');
-        const button = buildDocumentButton(doc);
-        li.appendChild(button);
-        return { li, button };
-      };
-
-      const sidebarItems = filteredDocuments.map(createListItem);
-      const mobileItems = filteredDocuments.map(createListItem);
-
-      sidebarList.replaceChildren(...sidebarItems.map((item) => item.li));
-      mobileList.replaceChildren(...mobileItems.map((item) => item.li));
-
-      buttons = [
-        ...sidebarItems.map((item) => item.button),
-        ...mobileItems.map((item) => item.button),
-      ];
-
-      buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-          setActiveDocument(button.dataset.docId);
-        });
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        setActiveDocument(button.dataset.docId);
+        setFolderOpen(false);
       });
-    };
-
-    const getRequestedDocId = () => {
-      const params = new URLSearchParams(window.location.search);
-      const requestedId = params.get(urlParam);
-      return requestedId && documentLookup.has(requestedId) ? requestedId : null;
-    };
-
-    renderLists();
+    });
 
     if (!buttons.length) {
+      showModified(null);
+      updateUrl(null, false);
       return;
     }
 
+    const params = new URLSearchParams(window.location.search);
+    const requestedId = params.get(urlParam);
     let hasActiveDocument = false;
-    const requestedId = getRequestedDocId();
 
-    if (requestedId) {
+    if (requestedId && documentLookup.has(requestedId)) {
       hasActiveDocument = setActiveDocument(requestedId, { allowUrlUpdate: false });
     }
 
@@ -590,9 +695,49 @@
       document.title = title.textContent;
     }
 
+    // Inside a Papers/Thoughts page, the page draws the Contents tree beside
+    // this frame, so hand it the headings (title excluded) instead.
+    const embedded = window.parent !== window;
+    if (embedded) {
+      const headingText = (id) => {
+        const element = document.getElementById(id);
+        if (!element) {
+          return '';
+        }
+        const copy = element.cloneNode(true);
+        copy.querySelectorAll('.katex-mathml, .md-fn-ref').forEach((node) => node.remove());
+        return copy.textContent.replace(/\s+/g, ' ').trim();
+      };
+
+      window.parent.postMessage(
+        {
+          type: 'reader-headings',
+          src,
+          headings: headings.slice(1).map((heading) => ({
+            level: heading.level,
+            id: heading.id,
+            text: headingText(heading.id),
+          })),
+        },
+        window.location.origin
+      );
+
+      window.addEventListener('message', (event) => {
+        if (
+          event.source !== window.parent ||
+          event.origin !== window.location.origin ||
+          event.data?.type !== 'reader-scroll' ||
+          typeof event.data.id !== 'string'
+        ) {
+          return;
+        }
+        document.getElementById(event.data.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
     // Contents: top-level and second-level headings, skipping the title itself.
     const tocEntries = headings.filter((heading, index) => index > 0 && heading.level <= 2);
-    if (tocNav && tocList && tocEntries.length) {
+    if (!embedded && tocNav && tocList && tocEntries.length) {
       tocList.innerHTML = tocEntries
         .map(
           (heading) =>
@@ -636,14 +781,13 @@
     }
 
     if (body.classList.contains('document-page')) {
-      const { documentsKey, viewerId, sidebarListId, mobileListId } = body.dataset || {};
+      const { documentsKey, viewerId, listId } = body.dataset || {};
       const documentsSource = documentsKey ? window[documentsKey] : undefined;
 
       initDocumentPage({
         documents: Array.isArray(documentsSource) ? documentsSource : [],
         viewerId: viewerId || 'document-viewer',
-        sidebarListId: sidebarListId || 'sidebar-document-list',
-        mobileListId: mobileListId || 'mobile-document-list',
+        listId: listId || 'document-list',
       });
     }
 
