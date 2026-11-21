@@ -91,37 +91,13 @@
     return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(documentUrl)}`;
   };
 
-  const createArrowIcon = () => {
-    const icon = document.createElement('span');
-    icon.className = 'slot-link-icon';
-    icon.setAttribute('aria-hidden', 'true');
-    icon.textContent = '↗';
-    return icon;
-  };
-
-  const createGithubIcon = () => {
-    const wrapper = document.createElement('span');
-    wrapper.className = 'slot-link-icon slot-link-icon--github';
-    wrapper.setAttribute('aria-hidden', 'true');
-
-    const svgNamespace = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(svgNamespace, 'svg');
-    svg.setAttribute('viewBox', '0 0 16 16');
-    svg.setAttribute('width', '16');
-    svg.setAttribute('height', '16');
-    svg.setAttribute('focusable', 'false');
-    svg.setAttribute('aria-hidden', 'true');
-
-    const path = document.createElementNS(svgNamespace, 'path');
-    path.setAttribute('fill', 'currentColor');
-    path.setAttribute(
-      'd',
-      'M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z'
-    );
-
-    svg.appendChild(path);
-    wrapper.appendChild(svg);
-    return wrapper;
+  // Marks a link that leaves the site.
+  const createExternalMark = () => {
+    const mark = document.createElement('span');
+    mark.className = 'leaf-ext';
+    mark.setAttribute('aria-hidden', 'true');
+    mark.textContent = '↗';
+    return mark;
   };
 
   const initHomePage = () => {
@@ -129,7 +105,7 @@
       Array.isArray(value) ? sortByModified(value.filter((doc) => doc && doc.title)) : [];
 
     const populateSlots = (slotsElement, documents, options = {}) => {
-      const { targetPage = null, iconRenderer = null } = options;
+      const { targetPage = null } = options;
 
       if (!slotsElement || !documents.length) {
         return;
@@ -153,11 +129,16 @@
           return;
         }
 
+        const item = document.createElement('li');
         const link = document.createElement('a');
-        link.className = 'slot slot-link';
+        link.className = 'leaf';
+
+        const branch = document.createElement('span');
+        branch.className = 'branch';
+        branch.setAttribute('aria-hidden', 'true');
 
         const label = document.createElement('span');
-        label.className = 'slot-link-label';
+        label.className = 'leaf-label';
         label.textContent = doc.shortTitle || doc.title;
 
         link.href = href;
@@ -174,13 +155,12 @@
         if (doc.url && /^https?:/i.test(doc.url)) {
           link.target = '_blank';
           link.rel = 'noopener noreferrer';
+          label.append(' ', createExternalMark());
         }
 
-        const icon =
-          typeof iconRenderer === 'function' ? iconRenderer(doc) : createArrowIcon();
-
-        link.append(label, icon);
-        fragment.appendChild(link);
+        link.append(branch, label);
+        item.appendChild(link);
+        fragment.appendChild(item);
       });
 
       slotsElement.replaceChildren(fragment);
@@ -200,12 +180,7 @@
 
     populateSlots(
       document.getElementById('projects-slots'),
-      normalizeDocuments(window.projectItems),
-      {
-        targetPage: null,
-        iconRenderer: (doc) =>
-          doc?.url && /github\.com/i.test(doc.url) ? createGithubIcon() : createArrowIcon(),
-      }
+      normalizeDocuments(window.projectItems)
     );
 
     document.querySelectorAll('.toggle-slots').forEach((button) => {
@@ -218,18 +193,10 @@
         return;
       }
 
-      const showLabel = button.dataset.showText || 'Show';
-      const hideLabel = button.dataset.hideText || 'Hide';
-      const textLabel = button.querySelector('.toggle-slots-text');
-
+      // The button's own text names the section; aria-expanded carries the state.
       const syncButtonState = (expanded) => {
         button.setAttribute('aria-expanded', String(expanded));
         slots.hidden = !expanded;
-        if (textLabel) {
-          textLabel.textContent = expanded ? hideLabel : showLabel;
-        } else {
-          button.setAttribute('aria-label', expanded ? hideLabel : showLabel);
-        }
       };
 
       const initialExpanded = button.getAttribute('aria-expanded');
@@ -659,6 +626,7 @@
         galleryItems: window.soundGalleryItems,
         viewerId: 'sound-gallery-viewer',
         iframeId: 'sound-gallery-iframe',
+        captionId: 'sound-gallery-caption',
         emptyMessageId: 'sound-gallery-empty',
         prevButtonId: 'sound-gallery-prev',
         nextButtonId: 'sound-gallery-next',

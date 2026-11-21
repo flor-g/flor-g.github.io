@@ -5,114 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flora Gu</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=chevron_right" />
 </head>
 <body class="home-page">
 
   <header class="page-header">
     <h1>Flora Gu | 顧 思悤</h1>
   </header>
-  
-  <main>
-    <section id="intro">
-      <h2>A Visitor's Guide</h2>
-      <p>
-        Hello there! I am Flora and this is an archive of me. If you are interested in my trajectory of thought, you are more than welcome to make yourself at home here. This site is still in construction, so please excuse the mess. If you are not too interested in the ambiguous part of me, I totally feel you---my résumé is at the bottom of this page. 
-      </p>
-    </section>
 
-    <section id="papers">
-      <header class="section-header">
-        <h2>Papers &amp; Essays </h2>
-        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="papers-slots" data-show-text="Show" data-hide-text="Hide">
-          <span class="material-symbols-outlined toggle-slots-icon" aria-hidden="true">chevron_right</span>
-          <span class="sr-only toggle-slots-text">Show</span>
-        </button>
-      </header>
-      <div class="slots" id="papers-slots" hidden>
-      </div>
-    </section>
+  <main class="tree">
+    <p class="tree-root" aria-hidden="true">.</p>
 
-    <section id="writings">
-      <header class="section-header">
-        <h2>Thoughts</h2>
-        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="writings-slots" data-show-text="Show" data-hide-text="Hide">
-          <span class="material-symbols-outlined toggle-slots-icon" aria-hidden="true">chevron_right</span>
-          <span class="sr-only toggle-slots-text">Show</span>
-        </button>
-      </header>
-      <div class="slots" id="writings-slots" hidden>
-      </div>
-    </section>
-
-     <section id="projects">
-      <header class="section-header">
-        <h2>Projects</h2>
-        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="projects-slots" data-show-text="Show" data-hide-text="Hide">
-          <span class="material-symbols-outlined toggle-slots-icon" aria-hidden="true">chevron_right</span>
-          <span class="sr-only toggle-slots-text">Show</span>
-        </button>
-      </header>
-      <div class="slots" id="projects-slots" hidden></div>
-    </section>
-
-    <section id="cv">
-      <header class="section-header">
-        <h2>Résumé</h2>
-        <button class="toggle-slots" type="button" aria-expanded="false" aria-controls="cv-slots" data-show-text="Show" data-hide-text="Hide">
-          <span class="material-symbols-outlined toggle-slots-icon" aria-hidden="true">chevron_right</span>
-          <span class="sr-only toggle-slots-text">Show</span>
-        </button>
-      </header>
-      <div class="slots" id="cv-slots" hidden>
-        <iframe
-         class="resume-embed"
-         src="resume.pdf#view=FitH&navpanes=0"
-         title="Résumé (PDF)"
-         loading="lazy"
-        ></iframe>
-        <a class="resume-download" href="resume.pdf" target="_blank" rel="noopener">Open the résumé as a PDF ↗</a>
-      </div>
-    </section>
-    <section id="sounds">
-      <header class="section-header">
-        <h2>Sounds I made</h2>
-      </header>
-      <div class="sound-gallery">
-        <div class="gallery-viewer" id="sound-gallery-viewer" hidden>
-          <div class="gallery-frame">
-            <iframe
-              id="sound-gallery-iframe"
-              class="gallery-embed"
-              title="Sound gallery player"
-              src="about:blank"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              hidden
-            ></iframe>
-          </div>
-          <div class="gallery-controls">
-            <button
-              type="button"
-              class="gallery-nav"
-              id="sound-gallery-prev"
-              aria-label="Play previous track"
-            >
-              &#8593;
-            </button>
-            <button
-              type="button"
-              class="gallery-nav"
-              id="sound-gallery-next"
-              aria-label="Play next track"
-            >
-              &#8595;
-            </button>
-          </div>
-        </div>
-        <p class="gallery-empty-message" id="sound-gallery-empty" hidden>
-          No tracks yet.
+    <section class="node" id="intro">
+      <h2 class="node-row">
+        <span class="branch" aria-hidden="true">\---</span><span class="node-label">.Visitor's guide</span>
+      </h2>
+      <div class="node-body">
+        <div class="ascii-rule" aria-hidden="true"><i></i></div>
+        <p class="colon-block">
+          Hello there! I am Flora and this is an archive of me. If you are interested in my trajectory of thought, you are more than welcome to make yourself at home here. This site is still in construction, so please excuse the mess. If you are not too interested in the ambiguous part of me, I totally feel you---my résumé is at the bottom of this page.
         </p>
+      </div>
+    </section>
+
+    <section class="node" id="papers">
+      <h2 class="node-row">
+        <span class="branch" aria-hidden="true">\---</span><button class="toggle-slots" type="button" aria-expanded="false" aria-controls="papers-slots"><span class="node-label">Papers &amp; Essays</span><span class="leader" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></button>
+      </h2>
+      <div class="node-body">
+        <ul class="slots" id="papers-slots" hidden></ul>
+      </div>
+    </section>
+
+    <section class="node" id="writings">
+      <h2 class="node-row">
+        <span class="branch" aria-hidden="true">\---</span><button class="toggle-slots" type="button" aria-expanded="false" aria-controls="writings-slots"><span class="node-label">Thoughts</span><span class="leader" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></button>
+      </h2>
+      <div class="node-body">
+        <ul class="slots" id="writings-slots" hidden></ul>
+      </div>
+    </section>
+
+    <section class="node" id="projects">
+      <h2 class="node-row">
+        <span class="branch" aria-hidden="true">\---</span><button class="toggle-slots" type="button" aria-expanded="false" aria-controls="projects-slots"><span class="node-label">Projects</span><span class="leader" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></button>
+      </h2>
+      <div class="node-body">
+        <ul class="slots" id="projects-slots" hidden></ul>
+      </div>
+    </section>
+
+    <section class="node" id="cv">
+      <h2 class="node-row">
+        <span class="branch" aria-hidden="true">\---</span><button class="toggle-slots" type="button" aria-expanded="false" aria-controls="cv-slots"><span class="node-label">Résumé</span><span class="leader" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></button>
+      </h2>
+      <div class="node-body">
+        <ul class="slots" id="cv-slots" hidden>
+          <li>
+            <a class="leaf" href="resume.pdf" target="_blank" rel="noopener">
+              <span class="branch" aria-hidden="true"></span><span class="leaf-label">resume.pdf <span class="leaf-ext" aria-hidden="true">↗</span></span>
+            </a>
+            <div class="leaf-body">
+              <div class="ascii-box">
+                <div class="ascii-rule" aria-hidden="true"><i></i></div>
+                <div class="ascii-box-body">
+                  <iframe
+                    class="resume-embed"
+                    src="resume.pdf#view=FitH&navpanes=0"
+                    title="Résumé (PDF)"
+                    loading="lazy"
+                  ></iframe>
+                </div>
+                <div class="ascii-rule" aria-hidden="true"><i></i></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="node" id="sounds">
+      <h2 class="node-row">
+        <span class="branch" aria-hidden="true">\---</span><span class="node-label">Sounds I Made</span>
+      </h2>
+      <div class="node-body">
+        <div class="ascii-box">
+          <div class="ascii-rule" aria-hidden="true"><i></i></div>
+          <div class="ascii-box-body sound-gallery">
+            <div class="gallery-viewer" id="sound-gallery-viewer" hidden>
+              <div class="gallery-bar">
+                <p class="gallery-caption" id="sound-gallery-caption"></p>
+                <div class="gallery-controls">
+                  <button type="button" class="gallery-nav" id="sound-gallery-prev" aria-label="Play previous track">[↑]</button>
+                  <button type="button" class="gallery-nav" id="sound-gallery-next" aria-label="Play next track">[↓]</button>
+                </div>
+              </div>
+              <div class="gallery-frame">
+                <iframe
+                  id="sound-gallery-iframe"
+                  class="gallery-embed"
+                  title="Sound gallery player"
+                  src="about:blank"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  hidden
+                ></iframe>
+              </div>
+            </div>
+            <p class="gallery-empty-message" id="sound-gallery-empty" hidden>No tracks yet.</p>
+          </div>
+          <div class="ascii-rule" aria-hidden="true"><i></i></div>
+        </div>
       </div>
     </section>
   </main>
