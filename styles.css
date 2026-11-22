@@ -5,7 +5,7 @@
   --accent:#d6a594;
   --emphasis: #bf3a0a;
   --muted: #bdaca6b2;
-  --tree-ink: var(--accent);
+  --tree-ink: #bdaca6cc;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,7 +14,7 @@
     --foreground: #f6f6f6;
     --accent: #f6f6f6;
     --muted: #333;
-    --tree-ink: color-mix(in srgb, var(--foreground) 40%, var(--background));
+    --tree-ink: var(--muted);
   }
 }
 
