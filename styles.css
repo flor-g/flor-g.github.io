@@ -535,19 +535,23 @@ h2 {
   min-width: 0;
 }
 
-.folder-path {
+.document-page .folder-path {
   display: flex;
   align-items: baseline;
-  font-weight: 600;
+  font-size: 1.6em;
+  line-height: 1.3;
+  color: var(--tree-ink);
 }
 
+/* Same colour as the title until hovered, when it shows it is a link. */
 .parent-link {
-  color: var(--emphasis);
+  color: inherit;
   text-decoration: none;
 }
 
 .parent-link:hover,
 .parent-link:focus-visible {
+  color: var(--emphasis);
   text-decoration: underline;
 }
 
@@ -711,26 +715,76 @@ h2 {
   border: 0;
 }
 
-/* Thoughts gallery ------------------------------------------------------ */
+/* Thoughts gallery ------------------------------------------------------
+   Same columns as the document area above: the box spans the left column
+   like the viewer box, and the notes line up with the folder menu. Inside
+   the box, the picture and the arrows sit side by side as before the ASCII
+   restyle. The picture fills what the arrows leave, up to the old frame's
+   widest (706px, or its own 820px max below 1024px). Its height followed
+   the old column, so it is measured from .gallery-main: (old column - 34px)
+   is (this column + --gallery-h-add), up to --gallery-h-max. */
 
-/* Stays in the left column, clear of the sticky folder. */
 .gallery-section {
-  grid-column: 1;
-  min-width: 0;
+  --gallery-max: 706px;
+  --gallery-ratio: 0.62;
+  --gallery-h-add: calc(40ch - 386px);
+  --gallery-h-max: 766px;
+  width: min(1200px, 100%);
+  margin: calc(2 * var(--line)) auto 0;
+  display: grid;
+  grid-template-columns: var(--doc-cols);
+  column-gap: 6ch;
+  row-gap: var(--line);
+  align-items: start;
 }
 
-.gallery-description-panel {
-  margin-top: var(--line);
+.gallery-main {
+  min-width: 0;
+  container-type: inline-size;
+}
+
+/* Let the frame measure .gallery-main rather than the box around it. */
+.gallery-main .ascii-box-body {
+  container-type: normal;
+}
+
+.gallery-stage {
+  display: flex;
+  align-items: center;
+  gap: 1ch;
+}
+
+.writings-page .gallery-frame {
+  flex: 1 1 auto;
+  width: auto;
+  max-width: var(--gallery-max);
+  min-width: 0;
+  height: calc(min(var(--gallery-h-max), 100cqi + var(--gallery-h-add)) * var(--gallery-ratio));
+  height: round(calc(min(var(--gallery-h-max), 100cqi + var(--gallery-h-add)) * var(--gallery-ratio)), var(--line));
+}
+
+/* Arrows against the box's right side. */
+.writings-page .gallery-controls {
+  flex: none;
+  flex-direction: column;
+  gap: 0;
+  margin-left: auto;
+}
+
+.writings-page .gallery-nav {
+  font-size: 1.4em;
+  line-height: calc(2 * var(--line));
+}
+
+/* The title sits under the box, pointing up at the picture. */
+.writings-page .gallery-caption::before {
+  content: "^ ";
+  color: var(--tree-ink);
 }
 
 .gallery-viewer[hidden],
 .gallery-description-panel[hidden] {
   display: none;
-}
-
-.writings-page .gallery-frame {
-  height: calc(100cqi * 0.62);
-  height: round(up, calc(100cqi * 0.62), var(--line));
 }
 
 .gallery-description-title {
@@ -761,8 +815,13 @@ h2 {
     grid-row: 2;
   }
 
+  /* The old gallery had 1rem side padding here, the page now has 1.5rem,
+     so its column was 16px wider than this one. */
   .gallery-section {
-    grid-row: 3;
+    grid-template-columns: minmax(0, 1fr);
+    --gallery-max: 820px; /* the old frame's own max-width */
+    --gallery-h-add: -18px; /* old column was 16px wider: +16 - 34 */
+    --gallery-h-max: 100vw;
   }
 
   .folder-toggle {
@@ -774,9 +833,22 @@ h2 {
   }
 }
 
+@media (max-width: 640px) {
+  /* Before: tighter padding, 40px arrows, and a 75% tall frame. */
+  .gallery-section {
+    --gallery-ratio: 0.75;
+    --gallery-h-add: -10px; /* +16 - 26 */
+  }
+}
+
 @media (max-width: 600px) {
   .document-page {
     padding: 2.5rem 1rem 3rem;
+  }
+
+  /* Page padding is back to 1rem, the same column as the old gallery. */
+  .gallery-section {
+    --gallery-h-add: -26px;
   }
 }
 

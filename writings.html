@@ -43,20 +43,15 @@
           <div class="ascii-rule" aria-hidden="true"><i></i></div>
         </div>
       </main>
+    </div>
 
-      <section class="gallery-section" aria-label="Visual gallery">
-        <div class="gallery-main">
+    <section class="gallery-section" aria-label="Visual gallery">
+      <div class="gallery-main">
+        <div class="gallery-viewer" id="gallery-viewer" hidden>
           <div class="ascii-box">
             <div class="ascii-rule" aria-hidden="true"><i></i></div>
             <div class="ascii-box-body">
-              <div class="gallery-viewer" id="gallery-viewer" hidden>
-                <div class="gallery-bar">
-                  <p class="gallery-caption" id="gallery-caption" hidden></p>
-                  <div class="gallery-controls">
-                    <button type="button" class="gallery-nav" id="gallery-prev" aria-label="View previous piece">[↑]</button>
-                    <button type="button" class="gallery-nav" id="gallery-next" aria-label="View next piece">[↓]</button>
-                  </div>
-                </div>
+              <div class="gallery-stage">
                 <div class="gallery-frame">
                   <iframe
                     id="gallery-iframe"
@@ -67,24 +62,29 @@
                     hidden
                   ></iframe>
                 </div>
+                <div class="gallery-controls">
+                  <button type="button" class="gallery-nav" id="gallery-prev" aria-label="View previous piece">[↑]</button>
+                  <button type="button" class="gallery-nav" id="gallery-next" aria-label="View next piece">[↓]</button>
+                </div>
               </div>
-              <p class="gallery-empty-message" id="gallery-empty-message" hidden>No items yet.</p>
             </div>
             <div class="ascii-rule" aria-hidden="true"><i></i></div>
           </div>
+          <p class="gallery-caption" id="gallery-caption" hidden></p>
         </div>
+        <p class="gallery-empty-message" id="gallery-empty-message" hidden>No items yet.</p>
+      </div>
 
-        <aside class="gallery-description-panel" id="gallery-description-panel" aria-live="polite">
-          <h2 class="gallery-description-title">About this piece</h2>
-          <p class="colon-block gallery-transcription" id="gallery-transcription">
-            Select a gallery item to read its transcription.
-          </p>
-          <p class="colon-block gallery-description" id="gallery-description">
-            Select a gallery item to read its description.
-          </p>
-        </aside>
-      </section>
-    </div>
+      <aside class="gallery-description-panel" id="gallery-description-panel" aria-live="polite">
+        <h2 class="gallery-description-title">About this piece</h2>
+        <p class="colon-block gallery-transcription" id="gallery-transcription">
+          Select a gallery item to read its transcription.
+        </p>
+        <p class="colon-block gallery-description" id="gallery-description">
+          Select a gallery item to read its description.
+        </p>
+      </aside>
+    </section>
 
     <script src="papers-data.js"></script>
     <script src="site.js"></script>
