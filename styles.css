@@ -437,10 +437,45 @@ h2 {
 .home-page footer {
   font-size: 0.8rem;
   letter-spacing: 0.04em;
+  container-type: inline-size;
+}
+
+/* Scales down so the widest row (46 columns) always fits. */
+.home-page .signature {
+  margin: calc(2 * var(--line)) 0 0;
+  font-family: var(--mono);
+  font-size: min(var(--fs), 100cqi / 28);
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--tree-ink);
+  white-space: pre;
+  width: fit-content;
+  margin-left: auto;
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 1ch;
+}
+
+.footer-row p {
+  flex: 0 1 auto;
+}
+
+.footer-rule {
+  flex: 1 1 4ch;
+  min-width: 4ch;
+}
+
+/* Only the closing "+"; the text itself opens the rule with "+-". */
+.footer-rule::before {
+  content: none;
 }
 
 .home-page footer p::before {
-  content: "-- ";
+  content: "+-";
   color: var(--tree-ink);
 }
 
