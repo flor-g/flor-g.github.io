@@ -7,36 +7,42 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="document-page papers-page" data-documents-key="papersDocuments">
-    <div class="page">
-      <header class="top-bar">
-        <a class="back-link" href="index.html">&#8592; Back</a>
-        <h1>Papers &amp; Essays</h1>
-      </header>
+    <div class="doc-layout">
+      <nav class="folder" aria-label="Papers and essays" data-open="false">
+        <h1 class="folder-path">
+          <a class="parent-link" href="index.html" title="Back to the homepage"><span aria-hidden="true">..</span><span class="sr-only">Back to the homepage</span></a><span aria-hidden="true">/</span><span class="folder-name">Papers &amp; Essays</span><button class="folder-toggle" type="button" aria-expanded="false" aria-controls="document-list"><span class="caret" aria-hidden="true"></span><span class="sr-only">Show papers</span></button>
+        </h1>
+        <ul class="folder-list" id="document-list"></ul>
+      </nav>
 
-      <main>
-        <section class="viewer" aria-live="polite">
-          <p class="viewer-modified" id="document-modified" hidden></p>
-          <iframe
-            id="document-viewer"
-            title="Paper viewer"
-            src="about:blank"
-            allow="fullscreen"
-          ></iframe>
+      <main class="doc-main">
+        <p class="doc-root"><span class="doc-ink" aria-hidden="true">. </span><span id="document-modified">#Last updated: --/--/----</span></p>
+
+        <section class="doc-contents" id="document-contents" aria-label="Contents" hidden>
+          <h2 class="contents-row">
+            <span class="doc-ink" aria-hidden="true">\--</span><button class="contents-toggle" type="button" aria-expanded="false" aria-controls="contents-list">Contents<span class="caret" aria-hidden="true"></span></button>
+          </h2>
+          <div class="contents-body">
+            <ul class="contents-list" id="contents-list" hidden></ul>
+          </div>
         </section>
 
-        <aside class="sidebar" aria-label="Papers and essays">
-          <div class="sidebar-header">
-            <a class="back-link" href="index.html">&#8592; Back</a>
-            <h1>Papers &amp; Essays</h1>
-          </div>
-          <ul class="document-list" id="sidebar-document-list"></ul>
-        </aside>
-      </main>
+        <p class="doc-ink" aria-hidden="true">|</p>
 
-      <section class="mobile-section" aria-label="Papers and essays">
-        <h2>Browse papers</h2>
-        <ul class="mobile-document-list" id="mobile-document-list"></ul>
-      </section>
+        <div class="ascii-box viewer-box">
+          <div class="ascii-rule" aria-hidden="true"><i></i></div>
+          <div class="ascii-box-body">
+            <iframe
+              id="document-viewer"
+              class="document-viewer"
+              title="Paper viewer"
+              src="about:blank"
+              allow="fullscreen"
+            ></iframe>
+          </div>
+          <div class="ascii-rule" aria-hidden="true"><i></i></div>
+        </div>
+      </main>
     </div>
 
     <script src="papers-data.js"></script>

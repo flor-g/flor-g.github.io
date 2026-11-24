@@ -7,87 +7,84 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="document-page writings-page" data-documents-key="casualWritingDocuments">
-    <div class="page">
-      <header class="top-bar">
-        <a class="back-link" href="index.html">&#8592; Back</a>
-        <h1>Thoughts</h1>
-      </header>
+    <div class="doc-layout">
+      <nav class="folder" aria-label="Thoughts" data-open="false">
+        <h1 class="folder-path">
+          <a class="parent-link" href="index.html" title="Back to the homepage"><span aria-hidden="true">..</span><span class="sr-only">Back to the homepage</span></a><span aria-hidden="true">/</span><span class="folder-name">Thoughts</span><button class="folder-toggle" type="button" aria-expanded="false" aria-controls="document-list"><span class="caret" aria-hidden="true"></span><span class="sr-only">Show thoughts</span></button>
+        </h1>
+        <ul class="folder-list" id="document-list"></ul>
+      </nav>
 
-      <main>
-        <section class="viewer" aria-label="Thoughts viewer">
-          <p class="viewer-modified" id="document-modified" hidden></p>
-          <iframe
-            id="document-viewer"
-            title="Thoughts viewer"
-            src="about:blank"
-            allow="fullscreen"
-          ></iframe>
+      <main class="doc-main">
+        <p class="doc-root"><span class="doc-ink" aria-hidden="true">. </span><span id="document-modified">#Last updated: --/--/----</span></p>
+
+        <section class="doc-contents" id="document-contents" aria-label="Contents" hidden>
+          <h2 class="contents-row">
+            <span class="doc-ink" aria-hidden="true">\--</span><button class="contents-toggle" type="button" aria-expanded="false" aria-controls="contents-list">Contents<span class="caret" aria-hidden="true"></span></button>
+          </h2>
+          <div class="contents-body">
+            <ul class="contents-list" id="contents-list" hidden></ul>
+          </div>
         </section>
 
-        <aside class="sidebar" aria-label="Thoughts">
-          <div class="sidebar-header">
-            <a class="back-link" href="index.html">&#8592; Back</a>
-            <h1>Thoughts</h1>
-          </div>
-          <ul class="document-list" id="sidebar-document-list"></ul>
-        </aside>
-      </main>
+        <p class="doc-ink" aria-hidden="true">|</p>
 
-      <section class="mobile-section" aria-label="Thoughts">
-        <h2>Browse thoughts</h2>
-        <ul class="mobile-document-list" id="mobile-document-list"></ul>
-      </section>
-
-      <section class="gallery-section" aria-label="Visual gallery">
-        <div class="gallery-viewer" id="gallery-viewer" hidden>
-          <div class="gallery-frame">
+        <div class="ascii-box viewer-box">
+          <div class="ascii-rule" aria-hidden="true"><i></i></div>
+          <div class="ascii-box-body">
             <iframe
-              id="gallery-iframe"
-              class="gallery-embed"
-              title="Gallery preview"
+              id="document-viewer"
+              class="document-viewer"
+              title="Thoughts viewer"
               src="about:blank"
               allow="fullscreen"
-              hidden
             ></iframe>
           </div>
-          <div class="gallery-controls">
-            <button
-              type="button"
-              class="gallery-nav"
-              id="gallery-prev"
-              aria-label="View previous piece"
-            >
-              &#8593;
-            </button>
-            <button
-              type="button"
-              class="gallery-nav"
-              id="gallery-next"
-              aria-label="View next piece"
-            >
-              &#8595;
-            </button>
-          </div>
+          <div class="ascii-rule" aria-hidden="true"><i></i></div>
         </div>
-        <aside
-          class="gallery-description-panel"
-          id="gallery-description-panel"
-          aria-live="polite"
-        >
-          <h2 class="gallery-description-title">About this piece</h2>
-          <p class="gallery-transcription" id="gallery-transcription">
-            Select a gallery item to read its transcription.
-          </p>
-          <p class="gallery-description" id="gallery-description">
-            Select a gallery item to read its description.
-          </p>
-        </aside>
-        <p class="gallery-caption" id="gallery-caption" hidden></p>
-        <p class="gallery-empty-message" id="gallery-empty-message" hidden>
-          No items yet.
-        </p>
-      </section>
+      </main>
     </div>
+
+    <section class="gallery-section" aria-label="Visual gallery">
+      <div class="gallery-main">
+        <div class="gallery-viewer" id="gallery-viewer" hidden>
+          <div class="ascii-box">
+            <div class="ascii-rule" aria-hidden="true"><i></i></div>
+            <div class="ascii-box-body">
+              <div class="gallery-stage">
+                <div class="gallery-frame">
+                  <iframe
+                    id="gallery-iframe"
+                    class="gallery-embed"
+                    title="Gallery preview"
+                    src="about:blank"
+                    allow="fullscreen"
+                    hidden
+                  ></iframe>
+                </div>
+                <div class="gallery-controls">
+                  <button type="button" class="gallery-nav" id="gallery-prev" aria-label="View previous piece">[↑]</button>
+                  <button type="button" class="gallery-nav" id="gallery-next" aria-label="View next piece">[↓]</button>
+                </div>
+              </div>
+            </div>
+            <div class="ascii-rule" aria-hidden="true"><i></i></div>
+          </div>
+          <p class="gallery-caption" id="gallery-caption" hidden></p>
+        </div>
+        <p class="gallery-empty-message" id="gallery-empty-message" hidden>No items yet.</p>
+      </div>
+
+      <aside class="gallery-description-panel" id="gallery-description-panel" aria-live="polite">
+        <h2 class="gallery-description-title">About this piece</h2>
+        <p class="colon-block gallery-transcription" id="gallery-transcription">
+          Select a gallery item to read its transcription.
+        </p>
+        <p class="colon-block gallery-description" id="gallery-description">
+          Select a gallery item to read its description.
+        </p>
+      </aside>
+    </section>
 
     <script src="papers-data.js"></script>
     <script src="site.js"></script>
